@@ -8,6 +8,9 @@ services:
       - ${APP_DATA_DIR}/data:/data/db
     environment:
       MONGO_INITDB_DATABASE: umbrel
+      # Para adicionar autenticação, descomente as linhas abaixo:
+      # MONGO_INITDB_ROOT_USERNAME: admin
+      # MONGO_INITDB_ROOT_PASSWORD: ${APP_PASSWORD}
 
   web:
     image: mongo-express:latest
@@ -21,3 +24,6 @@ services:
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_BASICAUTH: false
       ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+      # Se habilitar autenticação no MongoDB, descomente também:
+      # ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      # ME_CONFIG_MONGODB_ADMINPASSWORD: ${APP_PASSWORD}
