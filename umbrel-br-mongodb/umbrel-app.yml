@@ -1,0 +1,20 @@
+manifestVersion: 1
+id: umbrel-br-mongodb
+name: MongoDB
+icon: https://www.mongodb.com/assets/images/global/favicon.ico
+category: Databases
+version: "6.0"
+port: 27017
+tagline: Banco de dados MongoDB para sua Umbrel
+website: https://www.mongodb.com
+submitter: Umbrel BR
+description: >-
+  Instala uma instância do MongoDB com persistência de dados e usuário padrão.
+  As credenciais podem ser definidas via variáveis de ambiente.
+releaseNotes: >
+  Inicialização do app MongoDB para Umbrel BR.
+
+dependencies: []
+path: ""
+defaultUsername: "mongo"
+defaultPassword: "mongo"
