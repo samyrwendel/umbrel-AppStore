@@ -11,7 +11,7 @@ services:
     environment:
       MONGO_INITDB_DATABASE: umbrel
       MONGO_INITDB_ROOT_USERNAME: admin
-      MONGO_INITDB_ROOT_PASSWORD: ${APP_PASSWORD}
+      MONGO_INITDB_ROOT_PASSWORD: admin
 
   web:
     image: mongo-express:latest
@@ -26,4 +26,4 @@ services:
       ME_CONFIG_BASICAUTH: false
       ME_CONFIG_MONGODB_ENABLE_ADMIN: true
       ME_CONFIG_MONGODB_ADMINUSERNAME: admin
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${APP_PASSWORD}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: admin
