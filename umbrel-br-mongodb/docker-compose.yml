@@ -6,6 +6,10 @@ services:
     volumes:
       - mongodb-data:/data/db
       - mongodb-config:/data/configdb
+    environment:
+      # Para adicionar senha, descomente as linhas abaixo:
+      # - MONGO_INITDB_ROOT_USERNAME=admin
+      # - MONGO_INITDB_ROOT_PASSWORD=suasenhaaqui
 
   mongo-express:
     image: mongo-express:latest
@@ -17,8 +21,11 @@ services:
       - ME_CONFIG_MONGODB_SERVER=mongodb
       - ME_CONFIG_MONGODB_PORT=27017
       - ME_CONFIG_BASICAUTH=false
+      # Se habilitar senha no MongoDB, descomente:
+      # - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
+      # - ME_CONFIG_MONGODB_ADMINPASSWORD=suasenhaaqui
     ports:
-      - "${PORT}:8081"
+      - "${PORT}:3333"
 
 volumes:
   mongodb-data:
