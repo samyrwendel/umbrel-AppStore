@@ -1,31 +1,22 @@
 manifestVersion: 1
 id: umbrel-br-mongodb
 name: MongoDB
-tagline: Banco de dados MongoDB com interface web Mongo Express
+tagline: Banco de dados NoSQL com interface visual
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.1.2"
+version: "7.1.3"
 port: 8081
 description: >-
-  MongoDB 7 sem autenticação para desenvolvimento local.
-  Interface web Mongo Express para gerenciar bancos e coleções.
+  MongoDB 7 com Mongo Express para gerenciamento visual.
   
-  PARA ADICIONAR SENHA:
-  1. Edite docker-compose.yml
-  2. Descomente as linhas de MONGO_INITDB_ROOT_USERNAME e PASSWORD
-  3. Reinicie o app
+  Acesse a interface web para criar e gerenciar seus bancos de dados.
 
 developer: MongoDB
 website: https://www.mongodb.com
-submitter: Umbrel BR
-submission:
+dependencies: []
 repo: https://github.com/mongodb/mongo
 support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Corrige conexão do Mongo Express mudando nomes dos serviços para db/web e porta para 8081.
-dependencies: []
-path: ""
-defaultUsername: ""
-defaultPassword: ""
+  Versão simplificada para instalação funcionar corretamente.
