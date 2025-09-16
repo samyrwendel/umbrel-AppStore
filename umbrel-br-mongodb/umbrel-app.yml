@@ -2,19 +2,20 @@ manifestVersion: 1
 id: umbrel-br-mongodb
 name: MongoDB
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
-category: Databases
-version: "7.0.6"
+category: Development
+version: "7.0.7"
 port: 8081
 description: >-
-  MongoDB com interface web Mongo Express.
+  MongoDB database with Mongo Express web interface.
 developer: MongoDB
 website: https://www.mongodb.com
 dependencies: []
 repo: https://github.com/mongodb/mongo
-support: https://github.com/samyrwendel/umbrel-AppStore
+support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Simplifica configuração para compatibilidade total com Umbrel.
+  Uses standard Umbrel app_proxy structure.
 defaultUsername: ""
 defaultPassword: ""
+torOnly: false
