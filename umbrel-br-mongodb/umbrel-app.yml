@@ -1,9 +1,9 @@
 manifestVersion: 1
 id: umbrel-br-mongodb
 name: MongoDB 7 + Mongo Express
-icon: https://www.vectorlogo.zone/logos/mongodb/mongodb-icon.png
+icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Databases
-version: "7.0.3"
+version: "7.0.4"
 port: 8081
 tagline: Banco de dados MongoDB com interface web Mongo Express
 website: https://www.mongodb.com
@@ -16,10 +16,10 @@ description: >-
   Instala o MongoDB 7 com interface web (Mongo Express) para gerenciar bancos e coleções.
   Credenciais padrão podem ser definidas via variáveis de ambiente.
 releaseNotes: >-
-  Adiciona healthcheck para garantir que MongoDB esteja pronto antes do Mongo Express iniciar.
+  Corrige URL do ícone para SVG oficial do MongoDB.
 
 gallery:
-  - https://www.vectorlogo.zone/logos/mongodb/mongodb-ar21.png
+  - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 
 dependencies: []
 path: ""
