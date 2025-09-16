@@ -4,10 +4,11 @@ name: MongoDB
 tagline: Banco de dados MongoDB com interface web Mongo Express
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.0.9"
+version: "7.1.0"
 port: 8081
 description: >-
-  Instala o MongoDB 7 com interface web (Mongo Express) para gerenciar bancos e coleções.
+  MongoDB 7 sem autenticação para desenvolvimento local.
+  Interface web Mongo Express para gerenciar bancos e coleções.
 
 developer: MongoDB
 website: https://www.mongodb.com
@@ -18,7 +19,7 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Desabilita basic auth para facilitar acesso.
+  Remove autenticação para facilitar desenvolvimento local.
 dependencies: []
 path: ""
 defaultUsername: ""
