@@ -1,12 +1,12 @@
 services:
   mongodb:
     image: mongo:6.0
-    container_name: umbrel-br-mongodb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-mongo}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-mongo}
     volumes:
       - mongodb-data:/data/db
+    restart: unless-stopped
 
   mongo-express:
     image: mongo-express:1.0.2-20
@@ -20,6 +20,7 @@ services:
       - ME_CONFIG_BASICAUTH_PASSWORD=${ME_CONFIG_BASICAUTH_PASSWORD:-pass}
     ports:
       - "${PORT}:8081"
+    restart: unless-stopped
 
 volumes:
   mongodb-data:
