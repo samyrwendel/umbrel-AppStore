@@ -4,18 +4,15 @@ name: MongoDB
 tagline: Banco de dados NoSQL com interface visual
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.1.8"
+version: "7.1.9"
 port: 8081
 description: >-
   MongoDB 7 SEM AUTENTICAÇÃO para desenvolvimento local.
   
-  IMPORTANTE: 
-  1. Se der erro, delete a pasta mongodb em app-data e reinstale
-  2. Para usar com Compass: mongodb://umbrel.local:27017
-  3. Para adicionar senha depois, edite o docker-compose.yml
+  ✅ MongoDB Compass: mongodb://umbrel.local:27017
+  ✅ Mongo Express: Interface web incluída
   
-  Porta MongoDB: 27017
-  Interface Web: Mongo Express
+  Para adicionar senha depois, edite o docker-compose.yml
 
 developer: MongoDB
 website: https://www.mongodb.com
@@ -25,4 +22,4 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Versão 7.1.8 - Sem autenticação para evitar conflitos com dados anteriores.
+  Versão 7.1.9 - Corrigido nome dos serviços para Mongo Express funcionar.
