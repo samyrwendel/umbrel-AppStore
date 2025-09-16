@@ -1,11 +1,13 @@
 services:
   mongodb:
-    image: mongo:6.0
+    image: mongo:7
+    command: mongod --auth --port 27017
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-mongo}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-mongo}
     volumes:
       - mongodb-data:/data/db
+      - mongodb-configdb-data:/data/configdb
     restart: unless-stopped
 
   mongo-express:
@@ -24,3 +26,4 @@ services:
 
 volumes:
   mongodb-data:
+  mongodb-configdb-data:
