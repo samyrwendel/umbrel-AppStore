@@ -1,26 +1,21 @@
 services:
   mongodb:
     image: mongo:7
-    command: mongod --auth --port 27017
+    command: mongod --auth
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME:-mongo}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD:-mongo}
     volumes:
-      - mongodb-data:/data/db
-      - mongodb-configdb-data:/data/configdb
+      - ${APP_DATA_DIR}/mongodb-data:/data/db
+      - ${APP_DATA_DIR}/mongodb-configdb:/data/configdb
     restart: unless-stopped
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
+    networks:
+      - default
 
   mongo-express:
     image: mongo-express:1.0.2-20
     depends_on:
-      mongodb:
-        condition: service_healthy
+      - mongodb
     environment:
       - ME_CONFIG_MONGODB_URL=mongodb://${MONGO_INITDB_ROOT_USERNAME:-mongo}:${MONGO_INITDB_ROOT_PASSWORD:-mongo}@mongodb:27017/?authSource=admin
       - ME_CONFIG_MONGODB_AUTH_DATABASE=admin
@@ -28,9 +23,11 @@ services:
       - ME_CONFIG_BASICAUTH_USERNAME=${ME_CONFIG_BASICAUTH_USERNAME:-admin}
       - ME_CONFIG_BASICAUTH_PASSWORD=${ME_CONFIG_BASICAUTH_PASSWORD:-pass}
     ports:
-      - "${APP_PORT}:8081"
+      - ${APP_HOST_PORT}:8081
     restart: unless-stopped
+    networks:
+      - default
 
-volumes:
-  mongodb-data:
-  mongodb-configdb-data:
+networks:
+  default:
+    name: ${STACK_NAME}_default
