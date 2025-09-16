@@ -1,25 +1,27 @@
 version: "3.7"
 
 services:
-  mongodb:
-    image: mongo:7
-    container_name: ${APP_NAME}_mongodb
-    restart: unless-stopped
-    volumes:
-      - ${APP_DATA_DIR}/data/db:/data/db
-      - ${APP_DATA_DIR}/data/configdb:/data/configdb
+  app_proxy:
     environment:
-      MONGO_INITDB_ROOT_USERNAME: ${APP_PASSWORD}
-      MONGO_INITDB_ROOT_PASSWORD: ${APP_PASSWORD}
-
-  mongo-express:
-    image: mongo-express:1.0.2-20
-    container_name: ${APP_NAME}_mongo_express
-    restart: unless-stopped
-    ports:
-      - ${APP_PORT}:8081
+      APP_HOST: umbrel-br-mongodb_web_1
+      APP_PORT: 8081
+    
+  web:
+    image: mongo-express:latest
+    restart: on-failure
+    stop_grace_period: 1m
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: ${APP_PASSWORD}
-      ME_CONFIG_MONGODB_ADMINPASSWORD: ${APP_PASSWORD}
-      ME_CONFIG_MONGODB_SERVER: ${APP_NAME}_mongodb
+      ME_CONFIG_MONGODB_SERVER: db
+      ME_CONFIG_MONGODB_ADMINUSERNAME: umbrel
+      ME_CONFIG_MONGODB_ADMINPASSWORD: moneyprintergobrrr
       ME_CONFIG_BASICAUTH: "false"
+
+  db:
+    image: mongo:7
+    restart: on-failure
+    stop_grace_period: 1m
+    volumes:
+      - ${APP_DATA_DIR}/data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: umbrel
+      MONGO_INITDB_ROOT_PASSWORD: moneyprintergobrrr
