@@ -4,12 +4,16 @@ name: MongoDB
 tagline: Banco de dados NoSQL com interface visual
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.1.3"
+version: "7.1.4"
 port: 8081
 description: >-
-  MongoDB 7 com Mongo Express para gerenciamento visual.
+  MongoDB 7 com autenticação e Mongo Express para gerenciamento visual.
   
   Acesse a interface web para criar e gerenciar seus bancos de dados.
+  
+  Credenciais:
+  - Usuário: admin
+  - Senha: use a senha mostrada no Umbrel
 
 developer: MongoDB
 website: https://www.mongodb.com
@@ -19,4 +23,5 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Versão simplificada para instalação funcionar corretamente.
+  Versão 7.1.4 - Autenticação ativada com senha do Umbrel.
+defaultUsername: admin
