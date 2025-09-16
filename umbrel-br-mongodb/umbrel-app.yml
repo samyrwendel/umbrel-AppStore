@@ -1,27 +1,20 @@
 manifestVersion: 1
 id: umbrel-br-mongodb
-name: MongoDB 7 + Mongo Express
+name: MongoDB
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Databases
-version: "7.0.5"
+version: "7.0.6"
 port: 8081
-tagline: Banco de dados MongoDB com interface web Mongo Express
-website: https://www.mongodb.com
-developer: MongoDB
-submitter: Umbrel BR
-submission:
-repo: https://github.com/samyrwendel/umbrel-AppStore/tree/master/umbrel-br-mongodb
-support:
 description: >-
-  Instala o MongoDB 7 com interface web (Mongo Express) para gerenciar bancos e coleções.
-  Credenciais padrão podem ser definidas via variáveis de ambiente.
-releaseNotes: >-
-  Ajusta variáveis de ambiente para padrão Umbrel (APP_HOST_PORT, APP_DATA_DIR).
-
+  MongoDB com interface web Mongo Express.
+developer: MongoDB
+website: https://www.mongodb.com
+dependencies: []
+repo: https://github.com/mongodb/mongo
+support: https://github.com/samyrwendel/umbrel-AppStore
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
-
-dependencies: []
-path: ""
-defaultUsername: "admin"
-defaultPassword: "pass"
+releaseNotes: >-
+  Simplifica configuração para compatibilidade total com Umbrel.
+defaultUsername: ""
+defaultPassword: ""
