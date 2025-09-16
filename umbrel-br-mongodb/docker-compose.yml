@@ -12,6 +12,8 @@ services:
   web:
     image: mongo-express:latest
     restart: unless-stopped
+    depends_on:
+      - server
     ports:
       - ${APP_HOST_PORT}:8081
     environment:
