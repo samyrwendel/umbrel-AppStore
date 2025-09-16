@@ -1,32 +1,21 @@
-version: '3'
+version: '3.8'
+
 services:
-  db:
+  server:
     image: mongo:7
     restart: unless-stopped
     volumes:
-      - ${APP_DATA_DIR}/mongodb-data:/data/db
-      - ${APP_DATA_DIR}/mongodb-config:/data/configdb
+      - ${APP_DATA_DIR}/data:/data/db
     environment:
-      # Para adicionar senha, descomente as linhas abaixo:
-      # - MONGO_INITDB_ROOT_USERNAME=admin
-      # - MONGO_INITDB_ROOT_PASSWORD=suasenhaaqui
+      MONGO_INITDB_DATABASE: umbrel
 
   web:
     image: mongo-express:latest
     restart: unless-stopped
-    depends_on:
-      - db
-    environment:
-      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
-      - ME_CONFIG_MONGODB_SERVER=db
-      - ME_CONFIG_MONGODB_PORT=27017
-      - ME_CONFIG_BASICAUTH=false
-      # Se habilitar senha no MongoDB, descomente:
-      # - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
-      # - ME_CONFIG_MONGODB_ADMINPASSWORD=suasenhaaqui
     ports:
-      - "${APP_HOST_PORT}:8081"
-
-volumes:
-  mongodb-data:
-  mongodb-config:
+      - ${APP_HOST_PORT}:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: server
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
