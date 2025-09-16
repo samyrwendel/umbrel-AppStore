@@ -4,18 +4,20 @@ name: MongoDB
 tagline: Banco de dados NoSQL com interface visual
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.1.6"
+version: "7.1.7"
 port: 8081
 description: >-
   MongoDB 7 com autenticação e Mongo Express para gerenciamento visual.
   
-  Acesse a interface web para criar e gerenciar seus bancos de dados.
+  IMPORTANTE: Se der erro de autenticação, desinstale completamente o app,
+  delete a pasta mongodb em app-data e reinstale.
   
-  Credenciais (TESTE):
+  Credenciais:
   - Usuário: admin
   - Senha: admin
   
-  Porta MongoDB: 27017 (para conexões externas)
+  Porta MongoDB: 27017
+  Connection String: mongodb://admin:admin@umbrel.local:27017/?authSource=admin
 
 developer: MongoDB
 website: https://www.mongodb.com
@@ -25,6 +27,6 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Versão 7.1.6 - Senha fixa admin/admin para testes com MongoDB Compass.
+  Versão 7.1.7 - Corrigido problema de autenticação com comando mongod --auth.
 defaultUsername: admin
 defaultPassword: admin
