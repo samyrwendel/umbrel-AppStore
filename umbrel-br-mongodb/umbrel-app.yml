@@ -4,8 +4,8 @@ name: MongoDB
 tagline: Banco de dados MongoDB com interface web Mongo Express
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.1.1"
-port: 3333
+version: "7.1.2"
+port: 8081
 description: >-
   MongoDB 7 sem autenticação para desenvolvimento local.
   Interface web Mongo Express para gerenciar bancos e coleções.
@@ -24,7 +24,7 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Muda porta para 3333 e adiciona instruções para configurar senha.
+  Corrige conexão do Mongo Express mudando nomes dos serviços para db/web e porta para 8081.
 dependencies: []
 path: ""
 defaultUsername: ""
