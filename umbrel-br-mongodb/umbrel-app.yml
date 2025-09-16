@@ -1,18 +1,18 @@
 manifestVersion: 1
 id: umbrel-br-mongodb
-name: MongoDB
+name: MongoDB + Mongo Express
 icon: https://www.mongodb.com/assets/images/global/favicon.ico
 category: Databases
 version: "6.0"
-port: 27017
-tagline: Banco de dados MongoDB para sua Umbrel
+port: 8081
+tagline: MongoDB com interface web Mongo Express
 website: https://www.mongodb.com
 submitter: Umbrel BR
 description: >-
-  Instala uma instância do MongoDB com persistência de dados e usuário padrão.
-  As credenciais podem ser definidas via variáveis de ambiente.
-releaseNotes: >
-  Inicialização do app MongoDB para Umbrel BR.
+  Instala o MongoDB com uma interface web (Mongo Express) para gerenciar bancos e coleções.
+  Credenciais padrão podem ser definidas via variáveis de ambiente.
+releaseNotes: >-
+  Adiciona Mongo Express como UI no app MongoDB.
 
 dependencies: []
 path: ""
