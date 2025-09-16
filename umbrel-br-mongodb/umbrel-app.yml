@@ -3,7 +3,7 @@ id: umbrel-br-mongodb
 name: MongoDB + Mongo Express
 icon: https://www.mongodb.com/assets/images/global/favicon.ico
 category: Databases
-version: "6.0"
+version: "6.0.1"
 port: 8081
 tagline: MongoDB com interface web Mongo Express
 website: https://www.mongodb.com
@@ -12,9 +12,9 @@ description: >-
   Instala o MongoDB com uma interface web (Mongo Express) para gerenciar bancos e coleções.
   Credenciais padrão podem ser definidas via variáveis de ambiente.
 releaseNotes: >-
-  Adiciona Mongo Express como UI no app MongoDB.
+  Alinha credenciais mostradas com o basic auth padrão do Mongo Express.
 
 dependencies: []
 path: ""
-defaultUsername: "mongo"
-defaultPassword: "mongo"
+defaultUsername: "admin"
+defaultPassword: "pass"
