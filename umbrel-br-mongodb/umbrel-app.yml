@@ -1,21 +1,25 @@
 manifestVersion: 1
 id: umbrel-br-mongodb
 name: MongoDB
+tagline: Banco de dados MongoDB com interface web Mongo Express
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.0.7"
+version: "7.0.8"
 port: 8081
 description: >-
-  MongoDB database with Mongo Express web interface.
+  Instala o MongoDB 7 com interface web (Mongo Express) para gerenciar bancos e coleções.
+
 developer: MongoDB
 website: https://www.mongodb.com
-dependencies: []
+submitter: Umbrel BR
+submission:
 repo: https://github.com/mongodb/mongo
 support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Uses standard Umbrel app_proxy structure.
-defaultUsername: ""
-defaultPassword: ""
-torOnly: false
+  Segue padrão exato dos outros apps do repositório.
+dependencies: []
+path: ""
+defaultUsername: "admin"
+defaultPassword: "pass"
