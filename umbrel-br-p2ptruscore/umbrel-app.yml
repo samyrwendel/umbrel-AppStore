@@ -4,22 +4,32 @@ name: P2P TrustScore Bot
 tagline: Bot de karma para Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "1.0.6"
+version: "1.0.7"
 port: 3000
 description: >-
-  Bot de karma/reputação para grupos do Telegram.
+  Bot de karma/reputação para grupos do Telegram construído com NestJS e TypeScript.
   
-  IMPORTANTE: Após instalar, configure o bot via SSH criando o arquivo .env
+  Permite que usuários deem e recebam pontos de karma, vejam rankings e muito mais.
+  
+  IMPORTANTE: Após instalar, configure o bot via SSH criando o arquivo .env com suas credenciais do Telegram.
+  
+  Requer MongoDB instalado (disponível nesta App Store).
 
 developer: Samyr Wendel
 website: https://github.com/samyrwendel/p2ptruscore
-dependencies: []
 repo: https://github.com/samyrwendel/p2ptruscore
 support: https://github.com/samyrwendel/p2ptruscore/issues
+gallery:
+  - https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-p2ptruscore/gallery/screenshot1.png
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v1.0.6 (Atual)
+  ### v1.0.7 (Atual)
+  - Corrigido erro "Algo deu errado" na interface
+  - Adicionadas imagens na galeria
+  - Melhorada descrição do app
+  
+  ### v1.0.6
   - Melhorado controle de versões nas release notes
   
   ### v1.0.5
