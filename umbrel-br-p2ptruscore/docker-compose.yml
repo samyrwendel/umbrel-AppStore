@@ -4,33 +4,46 @@ services:
   bot:
     image: node:20-alpine
     restart: unless-stopped
+    working_dir: /app
     
     command: >
       sh -c "
-        cd /app &&
-        if [ ! -f package.json ]; then
-          echo 'Primeira execução - Clonando repositório...' &&
+        if [ ! -f /app/package.json ]; then
+          echo 'Primeira execução - Preparando ambiente...' &&
           apk add --no-cache git &&
-          git clone https://github.com/samyrwendel/p2ptruscore.git . &&
-          echo 'Instalando dependências globais...' &&
-          npm install -g @nestjs/cli &&
-          echo 'Instalando dependências do projeto...' &&
-          npm install &&
-          echo 'Compilando aplicação...' &&
-          npm run build
+          git clone https://github.com/samyrwendel/p2ptruscore.git /tmp/bot &&
+          cp -r /tmp/bot/* /app/ &&
+          rm -rf /tmp/bot
         fi &&
-        echo 'P2P TrustScore Bot - Iniciando...' &&
+        
+        if [ ! -d /app/node_modules ]; then
+          echo 'Instalando dependências (isso pode demorar)...' &&
+          cd /app &&
+          npm install --production=false
+        fi &&
+        
+        if [ ! -d /app/dist ]; then
+          echo 'Compilando aplicação...' &&
+          cd /app &&
+          npx nest build || npm run build
+        fi &&
+        
+        echo 'Verificando configuração...' &&
         if [ -f /data/.env ]; then
+          cp /data/.env /app/.env &&
+          echo 'Configuração encontrada!'
+        else
+          echo 'ATENÇÃO: Configure o bot criando /data/.env' &&
+          echo 'Aguardando configuração...' &&
+          while [ ! -f /data/.env ]; do
+            sleep 30
+          done &&
           cp /data/.env /app/.env
         fi &&
-        if [ -d dist ]; then
-          npm run start:prod
-        else
-          echo 'Erro: Aplicação não compilada. Tentando compilar novamente...' &&
-          npm install -g @nestjs/cli &&
-          npm run build &&
-          npm run start:prod
-        fi
+        
+        echo 'Iniciando P2P TrustScore Bot...' &&
+        cd /app &&
+        npm run start:prod
       "
     
     volumes:
