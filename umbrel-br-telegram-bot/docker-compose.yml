@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  bot:
+    image: node:18-alpine
+    restart: unless-stopped
+    
+    command: >
+      sh -c "
+        echo 'Telegram Bot - Iniciando...' &&
+        echo 'Este é um template para bots do Telegram' &&
+        echo 'Configure suas variáveis de ambiente' &&
+        tail -f /dev/null
+      "
+    
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    
+    environment:
+      NODE_ENV: production
+    
+    ports:
+      - "${APP_HOST_PORT}:3000"

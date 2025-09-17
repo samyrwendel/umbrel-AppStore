@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: app
+      APP_PORT: 8081
+
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - ${APP_DATA_DIR}/data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: umbrel
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: umbrel
+
+  app:
+    image: mongo-express:latest
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongo
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH: false
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: true
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD: umbrel
