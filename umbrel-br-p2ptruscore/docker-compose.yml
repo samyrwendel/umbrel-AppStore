@@ -2,7 +2,7 @@ version: '3'
 
 services:
   bot:
-    image: node:18-alpine
+    image: node:20-alpine
     restart: unless-stopped
     
     command: >
@@ -12,7 +12,9 @@ services:
           echo 'Primeira execução - Clonando repositório...' &&
           apk add --no-cache git &&
           git clone https://github.com/samyrwendel/p2ptruscore.git . &&
-          echo 'Instalando dependências...' &&
+          echo 'Instalando dependências globais...' &&
+          npm install -g @nestjs/cli &&
+          echo 'Instalando dependências do projeto...' &&
           npm install &&
           echo 'Compilando aplicação...' &&
           npm run build
@@ -21,7 +23,15 @@ services:
         if [ -f /data/.env ]; then
           cp /data/.env /app/.env
         fi &&
-        npm run start:prod || echo 'Bot precisa ser configurado - veja o README'"
+        if [ -d dist ]; then
+          npm run start:prod
+        else
+          echo 'Erro: Aplicação não compilada. Tentando compilar novamente...' &&
+          npm install -g @nestjs/cli &&
+          npm run build &&
+          npm run start:prod
+        fi
+      "
     
     volumes:
       - ${APP_DATA_DIR}/app:/app
