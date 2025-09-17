@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma para Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "3.0.4"
+version: "3.0.5"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -20,12 +20,16 @@ support: https://github.com/samyrwendel/p2ptruscore/issues
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v3.0.4 (Atual) 🌐
+  ### v3.0.5 (Atual) 🔧
+  - CORREÇÃO CRÍTICA: Adicionada porta mapeada que estava faltando
+  - Agora tem ports: "${APP_HOST_PORT}:3000" igual ao MongoDB
+  - Interface web deve funcionar perfeitamente
+  
+  ### v3.0.4 🌐
   - Força atualização para versão com servidor web
   - Interface web na porta 3000 funcionando
   
   ### v3.0.3 🌐
   - Adicionado servidor web simples na porta 3000
   - Interface básica funcionando
-  - Botão "Abrir" deve funcionar agora
 torOnly: false
