@@ -11,14 +11,52 @@ services:
     restart: unless-stopped
     command: >
       sh -c "
-        echo 'P2P TrustScore Bot instalado com sucesso!' &&
-        echo 'Configure o bot editando as variáveis de ambiente' &&
-        echo 'Aguardando configuração...' &&
-        tail -f /dev/null
+        echo 'P2P TrustScore Bot - Iniciando servidor web...' &&
+        cat > /tmp/server.js << 'EOF'
+        const http = require('http');
+        const server = http.createServer((req, res) => {
+          res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+          res.end(`
+            <html>
+              <head>
+                <title>P2P TrustScore Bot</title>
+                <style>
+                  body { font-family: Arial, sans-serif; padding: 40px; background: #f5f5f5; }
+                  .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+                  h1 { color: #333; text-align: center; }
+                  .status { background: #e3f2fd; padding: 15px; border-radius: 5px; margin: 20px 0; }
+                  .instructions { background: #f3e5f5; padding: 15px; border-radius: 5px; }
+                  code { background: #f0f0f0; padding: 2px 5px; border-radius: 3px; }
+                </style>
+              </head>
+              <body>
+                <div class='container'>
+                  <h1>🤖 P2P TrustScore Bot</h1>
+                  <div class='status'>
+                    <h3>✅ Bot instalado com sucesso!</h3>
+                    <p>O bot está rodando e pronto para ser configurado.</p>
+                  </div>
+                  <div class='instructions'>
+                    <h3>📋 Próximos passos:</h3>
+                    <ol>
+                      <li>Crie um bot no Telegram via <code>@BotFather</code></li>
+                      <li>Configure as variáveis via SSH</li>
+                      <li>Reinicie o app</li>
+                    </ol>
+                    <p><strong>Versão:</strong> Template básico funcionando</p>
+                  </div>
+                </div>
+              </body>
+            </html>
+          `);
+        });
+        server.listen(3000, '0.0.0.0', () => {
+          console.log('🚀 Servidor web rodando na porta 3000');
+        });
+        EOF
+        node /tmp/server.js
       "
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
       NODE_ENV: production
-    ports:
-      - "${APP_HOST_PORT}:3000"
