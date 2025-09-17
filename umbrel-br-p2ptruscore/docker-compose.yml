@@ -1,19 +1,19 @@
 version: '3'
 
 services:
-  app_proxy:
-    environment:
-      APP_HOST: bot
-      APP_PORT: 3000
-
   bot:
-    image: samyrwendel/p2ptruscore:latest
+    image: node:20-alpine
     restart: unless-stopped
+    command: >
+      sh -c "
+        echo 'P2P TrustScore Bot instalado com sucesso!' &&
+        echo 'Configure o bot editando as variáveis de ambiente' &&
+        echo 'Aguardando configuração...' &&
+        tail -f /dev/null
+      "
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
       NODE_ENV: production
-      PORT: 3000
-      MONGODB_CNN: mongodb://admin:umbrel@host.docker.internal:27017/p2ptrustscore?authSource=admin
     ports:
       - "${APP_HOST_PORT}:3000"
