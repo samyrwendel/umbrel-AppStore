@@ -4,7 +4,8 @@ name: MongoDB
 tagline: Banco de dados NoSQL com interface visual
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.3.3"
+version: "7.1.9"
+port: 8081
 description: >-
   MongoDB 7 SEM AUTENTICAÇÃO para desenvolvimento local.
   
@@ -21,4 +22,4 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Versão 7.3.3 - Docker compose simplificado para instalação funcionar.
+  Versão 7.1.9 - Corrigido nome dos serviços para Mongo Express funcionar.
