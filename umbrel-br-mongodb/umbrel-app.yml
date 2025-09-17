@@ -4,7 +4,7 @@ name: MongoDB
 tagline: Banco de dados NoSQL com interface visual
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.2.3"
+version: "7.2.4"
 description: >-
   MongoDB 7 SEM AUTENTICAÇÃO para desenvolvimento local.
   
@@ -21,4 +21,4 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Versão 7.2.3 - Remove porta fixa para usar mapeamento dinâmico do Umbrel.
+  Versão 7.2.4 - Adiciona app_proxy para botão Abrir funcionar corretamente.
