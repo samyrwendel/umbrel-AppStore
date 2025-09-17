@@ -1,46 +1,19 @@
 version: '3'
 
 services:
+  app_proxy:
+    environment:
+      APP_HOST: bot
+      APP_PORT: 3000
+
   bot:
-    image: node:20-alpine
+    image: samyrwendel/p2ptruscore:latest
     restart: unless-stopped
-    
-    command: >
-      sh -c "
-        echo 'P2P TrustScore Bot - Iniciando...' &&
-        echo 'Preparando ambiente...' &&
-        apk add --no-cache git &&
-        
-        if [ ! -f /app/package.json ]; then
-          echo 'Primeira execução - Clonando repositório...' &&
-          rm -rf /app/* /app/.* 2>/dev/null || true &&
-          git clone https://github.com/samyrwendel/p2ptruscore.git /app &&
-          echo '✅ Repositório clonado!'
-        else
-          echo '✅ Código já existe, atualizando...' &&
-          cd /app &&
-          git pull origin main || true
-        fi &&
-        
-        cd /app &&
-        echo 'Instalando dependências...' &&
-        npm install &&
-        echo 'Instalando NestJS CLI...' &&
-        npm install -g @nestjs/cli &&
-        echo 'Compilando...' &&
-        npm run build &&
-        echo 'Bot pronto! Iniciando...' &&
-        npm run start:prod
-      "
-    
     volumes:
       - ${APP_DATA_DIR}/data:/data
-      - ${APP_DATA_DIR}/app:/app
-    
     environment:
       NODE_ENV: production
       PORT: 3000
       MONGODB_CNN: mongodb://admin:umbrel@host.docker.internal:27017/p2ptrustscore?authSource=admin
-    
     ports:
       - "${APP_HOST_PORT}:3000"
