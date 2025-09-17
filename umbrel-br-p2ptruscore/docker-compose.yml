@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  bot:
+    image: node:18-alpine
+    restart: unless-stopped
+    
+    # Clona o repositório e instala dependências
+    command: >
+      sh -c "
+        apk add --no-cache git &&
+        if [ ! -d /app/.git ]; then
+          git clone https://github.com/samyrwendel/p2ptruscore.git /app;
+        fi &&
+        cd /app &&
+        git pull origin main &&
+        npm install &&
+        npm run build &&
+        npm run start:prod
+      "
+    
+    volumes:
+      # Persiste o código e node_modules
+      - ${APP_DATA_DIR}/app:/app
+      # Arquivo de configuração
+      - ${APP_DATA_DIR}/config/.env:/app/.env:ro
+    
+    environment:
+      # Variáveis do bot
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_BOT_USERNAME: ${TELEGRAM_BOT_USERNAME}
+      
+      # Conexão com MongoDB local do Umbrel
+      MONGODB_CNN: mongodb://admin:umbrel@umbrel-br-mongodb_mongo_1:27017/p2ptruscore?authSource=admin
+      
+      # Porta da API (para o Mini App)
+      PORT: 3000
+      
+      # Outras variáveis do .env.production
+      NODE_ENV: production
+      THROTTLE_TTL: 60
+      THROTTLE_LIMIT: 10
+    
+    # Porta da API para o Mini App
+    ports:
+      - "${APP_HOST_PORT}:3000"
+    
+    # Conecta à rede do MongoDB
+    networks:
+      - umbrel-br-mongodb_default
+      - default
+    
+    depends_on:
+      - mongodb-check
+  
+  # Serviço auxiliar para verificar se MongoDB está disponível
+  mongodb-check:
+    image: busybox:latest
+    command: >
+      sh -c "
+        echo 'Aguardando MongoDB estar disponível...' &&
+        until nc -z umbrel-br-mongodb_mongo_1 27017; do
+          echo 'MongoDB ainda não está pronto...';
+          sleep 5;
+        done &&
+        echo 'MongoDB está pronto!'
+      "
+    networks:
+      - umbrel-br-mongodb_default
+
+networks:
+  umbrel-br-mongodb_default:
+    external: true
