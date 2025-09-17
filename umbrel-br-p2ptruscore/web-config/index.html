@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P2P TrustScore Bot - Configuração</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .status {
+            padding: 20px 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .status-dot.configured {
+            background: #27ae60;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.not-configured {
+            background: #e74c3c;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .form-container {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .help-text {
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 5px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .alert.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #667eea;
+        }
+
+        .instructions h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .instructions ol {
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+            color: #34495e;
+        }
+
+        .instructions code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 P2P TrustScore Bot</h1>
+            <p>Configuração do Bot de Karma para Telegram</p>
+        </div>
+
+        <div class="status" id="status">
+            <div class="loading">
+                <div class="spinner"></div>
+                Carregando status...
+            </div>
+        </div>
+
+        <div class="form-container" id="form-container" style="display: none;">
+            <div class="instructions">
+                <h3>📋 Como obter as credenciais:</h3>
+                <ol>
+                    <li>Abra o Telegram e procure por <code>@BotFather</code></li>
+                    <li>Digite <code>/newbot</code> e siga as instruções</li>
+                    <li>Copie o <strong>token</strong> que o BotFather fornecer</li>
+                    <li>O <strong>username</strong> é o nome que você escolheu (sem @)</li>
+                    <li>Cole as informações nos campos abaixo e clique em Salvar</li>
+                </ol>
+            </div>
+
+            <div id="alert-container"></div>
+
+            <form id="config-form">
+                <div class="form-group">
+                    <label for="token">🔑 Token do Bot</label>
+                    <input type="text" id="token" name="TELEGRAM_BOT_TOKEN" 
+                           placeholder="1234567890:ABCdefGHIjklMNOpqrsTUVwxyz" required>
+                    <div class="help-text">Token fornecido pelo @BotFather</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="username">👤 Username do Bot</label>
+                    <input type="text" id="username" name="TELEGRAM_BOT_USERNAME" 
+                           placeholder="meu_bot_karma" required>
+                    <div class="help-text">Nome do bot sem o @ (exemplo: meu_bot_karma)</div>
+                </div>
+
+                <button type="submit" class="btn" id="save-btn">
+                    💾 Salvar Configuração
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const statusEl = document.getElementById('status');
+        const formContainer = document.getElementById('form-container');
+        const alertContainer = document.getElementById('alert-container');
+        const configForm = document.getElementById('config-form');
+        const saveBtn = document.getElementById('save-btn');
+
+        // Função para mostrar alertas
+        function showAlert(message, type = 'success') {
+            alertContainer.innerHTML = `
+                <div class="alert ${type}">
+                    ${message}
+                </div>
+            `;
+            setTimeout(() => {
+                alertContainer.innerHTML = '';
+            }, 5000);
+        }
+
+        // Função para atualizar o status
+        async function updateStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const status = await response.json();
+                
+                const statusHtml = `
+                    <div class="status-indicator">
+                        <div class="status-dot ${status.configured ? 'configured' : 'not-configured'}"></div>
+                        <strong>${status.configured ? '✅ Bot Configurado' : '⚠️ Bot Não Configurado'}</strong>
+                    </div>
+                    <div style="font-size: 14px; color: #7f8c8d;">
+                        Token: ${status.hasToken ? '✅ Configurado' : '❌ Não configurado'} | 
+                        Username: ${status.hasUsername ? '✅ Configurado' : '❌ Não configurado'}
+                    </div>
+                `;
+                
+                statusEl.innerHTML = statusHtml;
+                formContainer.style.display = 'block';
+                
+                return status;
+            } catch (error) {
+                statusEl.innerHTML = `
+                    <div class="status-indicator">
+                        <div class="status-dot not-configured"></div>
+                        <strong>❌ Erro ao verificar status</strong>
+                    </div>
+                `;
+                console.error('Erro ao verificar status:', error);
+            }
+        }
+
+        // Função para carregar configurações existentes
+        async function loadConfig() {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                
+                document.getElementById('token').value = config.TELEGRAM_BOT_TOKEN || '';
+                document.getElementById('username').value = config.TELEGRAM_BOT_USERNAME || '';
+            } catch (error) {
+                console.error('Erro ao carregar configurações:', error);
+            }
+        }
+
+        // Função para salvar configurações
+        configForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            saveBtn.disabled = true;
+            saveBtn.textContent = '💾 Salvando...';
+            
+            try {
+                const formData = new FormData(configForm);
+                const config = Object.fromEntries(formData);
+                
+                const response = await fetch('/api/config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(config)
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showAlert('✅ ' + result.message, 'success');
+                    await updateStatus();
+                } else {
+                    showAlert('❌ ' + result.error, 'error');
+                }
+            } catch (error) {
+                showAlert('❌ Erro ao salvar configurações', 'error');
+                console.error('Erro:', error);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = '💾 Salvar Configuração';
+            }
+        });
+
+        // Inicializar página
+        async function init() {
+            await updateStatus();
+            await loadConfig();
+        }
+
+        init();
+    </script>
+</body>
+</html>
