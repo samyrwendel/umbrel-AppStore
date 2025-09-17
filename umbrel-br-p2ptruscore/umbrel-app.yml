@@ -1,47 +1,30 @@
 manifestVersion: 1
 id: umbrel-br-p2ptruscore
 name: P2P TrustScore Bot
-tagline: Bot de karma para Telegram com interface de configuração
+tagline: Bot de karma para Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "3.0.0"
+version: "3.0.1"
 port: 3000
 description: >-
-  Bot de karma/reputação para grupos do Telegram construído com NestJS e TypeScript.
+  Bot de karma/reputação para grupos do Telegram.
   
-  ✨ Interface web integrada para configuração! Clique em "Abrir" para configurar facilmente.
-  
-  Permite que usuários deem e recebam pontos de karma, vejam rankings e muito mais.
-  
-  🔧 Configuração simples pela interface web integrada
-  🤖 Bot completo com comandos de karma e ranking
-  📊 API REST para integração com Telegram Mini Apps
-  💾 Conecta automaticamente ao MongoDB local
-  
-  Requer MongoDB instalado (disponível nesta App Store).
+  Este é um template básico que instala com sucesso.
+  Configure manualmente após a instalação.
 
 developer: Samyr Wendel
 website: https://github.com/samyrwendel/p2ptruscore
 repo: https://github.com/samyrwendel/p2ptruscore
 support: https://github.com/samyrwendel/p2ptruscore/issues
-gallery:
-  - https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-p2ptruscore/gallery/screenshot1.png
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v3.0.0 (Atual) 🚀
-  - Estrutura simplificada igual ao MongoDB
-  - Usa imagem Docker pré-construída
-  - Instalação rápida e confiável
-  - app_proxy configurado corretamente
-  - Sem compilação durante instalação
+  ### v3.0.1 (Atual) ✅
+  - Versão ultra-simples que instala garantidamente
+  - Baseada no template que funcionou
+  - Sem compilação ou dependências complexas
+  - Pronto para configuração manual
   
-  ### Versões anteriores (v2.x.x)
-  - Tentativas de compilação em tempo real
-  - Problemas de loop infinito e dependências
-  - Correções diversas de instalação
-  
-  ### Versões anteriores (v1.x.x)
-  - Implementação inicial
-  - Múltiplas tentativas de configuração
+  IMPORTANTE: Esta é uma versão de teste para garantir que instala.
+  Após confirmar que funciona, adicionaremos o código do bot.
 torOnly: false
