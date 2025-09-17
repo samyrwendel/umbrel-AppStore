@@ -3,10 +3,10 @@ version: '3'
 services:
   app_proxy:
     environment:
-      APP_HOST: bot
+      APP_HOST: app
       APP_PORT: 3000
 
-  bot:
+  app:
     image: node:20-alpine
     restart: unless-stopped
     command: >
@@ -43,7 +43,7 @@ services:
                       <li>Configure as variáveis via SSH</li>
                       <li>Reinicie o app</li>
                     </ol>
-                    <p><strong>Versão:</strong> Template básico funcionando</p>
+                    <p><strong>Versão:</strong> 3.0.6 - Serviço renomeado para 'app'</p>
                   </div>
                 </div>
               </body>
