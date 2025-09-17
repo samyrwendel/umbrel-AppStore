@@ -1,0 +1,15 @@
+{
+  "name": "p2p-trustscore-config",
+  "version": "1.0.0",
+  "description": "Interface web para configurar o P2P TrustScore Bot",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
