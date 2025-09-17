@@ -16,7 +16,7 @@ services:
         const http = require('http');
         const server = http.createServer((req, res) => {
           res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-          res.end(`
+          res.end(\`
             <html>
               <head>
                 <title>P2P TrustScore Bot</title>
@@ -48,7 +48,7 @@ services:
                 </div>
               </body>
             </html>
-          `);
+          \`);
         });
         server.listen(3000, '0.0.0.0', () => {
           console.log('🚀 Servidor web rodando na porta 3000');
@@ -60,3 +60,5 @@ services:
       - ${APP_DATA_DIR}/data:/data
     environment:
       NODE_ENV: production
+    ports:
+      - "${APP_HOST_PORT}:3000"
