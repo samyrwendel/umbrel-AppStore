@@ -1,54 +1,51 @@
-version: '3.8'
+version: '3'
 
 services:
-  bot:
+  server:
     image: node:18-alpine
     restart: unless-stopped
-    working_dir: /app
     
-    # Comando simplificado para evitar problemas
+    # Comando mais simples
     command: >
       sh -c "
-        echo 'Instalando dependências do sistema...' &&
-        apk add --no-cache git &&
-        echo 'Clonando repositório...' &&
-        git clone https://github.com/samyrwendel/p2ptruscore.git . || true &&
-        echo 'Instalando dependências...' &&
-        npm install &&
-        echo 'Compilando aplicação...' &&
-        npm run build &&
-        echo 'Iniciando bot...' &&
-        npm run start:prod
+        echo 'P2P TrustScore Bot - Aguardando configuração...' &&
+        echo 'Por favor, configure as variáveis TELEGRAM_BOT_TOKEN e TELEGRAM_BOT_USERNAME' &&
+        echo 'Veja as instruções no README do app' &&
+        while true; do
+          if [ -f /app/.env ]; then
+            echo 'Arquivo de configuração encontrado!' &&
+            cd /app &&
+            if [ ! -f package.json ]; then
+              echo 'Baixando código do bot...' &&
+              apk add --no-cache git &&
+              git clone https://github.com/samyrwendel/p2ptruscore.git . &&
+              npm install &&
+              npm run build
+            fi &&
+            echo 'Iniciando bot...' &&
+            npm run start:prod
+          else
+            echo 'Aguardando arquivo de configuração em /app/.env...' &&
+            sleep 30
+          fi
+        done
       "
     
     volumes:
-      # Código do app
-      - ${APP_DATA_DIR}/code:/app
-      # Arquivo de configuração
-      - ${APP_DATA_DIR}/config/.env:/app/.env:ro
+      - ${APP_DATA_DIR}/data:/app
     
     environment:
-      # Variáveis do bot (serão sobrescritas pelo .env se existir)
-      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:-}
-      TELEGRAM_BOT_USERNAME: ${TELEGRAM_BOT_USERNAME:-}
-      
-      # Conexão com MongoDB local
-      MONGODB_CNN: mongodb://admin:umbrel@umbrel-br-mongodb_mongo_1:27017/p2ptruscore?authSource=admin
-      
-      # Porta da API
-      PORT: 3000
-      
-      # Ambiente
       NODE_ENV: production
+      PORT: 3000
+      MONGODB_CNN: mongodb://admin:umbrel@umbrel-br-mongodb_mongo_1:27017/p2ptruscore?authSource=admin
     
-    # Porta da API
     ports:
       - "${APP_HOST_PORT}:3000"
     
-    # Rede do MongoDB
     networks:
-      - umbrel-br-mongodb_default
+      - default
 
 networks:
-  umbrel-br-mongodb_default:
+  default:
+    name: umbrel_main_network
     external: true
