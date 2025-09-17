@@ -1,31 +1,25 @@
-version: "3.7"
+version: '3.8'
 
 services:
-  app_proxy:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - 27017:27017
+    volumes:
+      - ${APP_DATA_DIR}/data:/data/db
     environment:
-      APP_HOST: web
-      APP_PORT: 8081
-      
-  web:
+      MONGO_INITDB_DATABASE: umbrel
+
+  mongo-express:
     image: mongo-express:latest
-    restart: on-failure
-    stop_grace_period: 1m
+    restart: unless-stopped
     depends_on:
-      - db
+      - mongo
+    ports:
+      - ${APP_HOST_PORT}:8081
     environment:
-      ME_CONFIG_MONGODB_SERVER: db
+      ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_MONGODB_PORT: 27017
       ME_CONFIG_BASICAUTH: false
       ME_CONFIG_MONGODB_ENABLE_ADMIN: true
-
-  db:
-    image: mongo:7
-    restart: unless-stopped
-    stop_grace_period: 1m
-    volumes:
-      - ${APP_DATA_DIR}/data/db:/data/db
-      - ${APP_DATA_DIR}/data/configdb:/data/configdb
-    environment:
-      MONGO_INITDB_DATABASE: umbrel
-    ports:
-      - "27017:27017"
