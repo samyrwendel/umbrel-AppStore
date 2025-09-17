@@ -1,6 +1,11 @@
 version: '3.8'
 
 services:
+  app_proxy:
+    environment:
+      APP_HOST: app
+      APP_PORT: 8081
+
   mongo:
     image: mongo:7
     restart: unless-stopped
@@ -16,8 +21,6 @@ services:
     restart: unless-stopped
     depends_on:
       - mongo
-    ports:
-      - ${APP_HOST_PORT}:8081
     environment:
       ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_MONGODB_PORT: 27017
