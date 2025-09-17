@@ -23,6 +23,8 @@ services:
     restart: unless-stopped
     depends_on:
       - mongo
+    ports:
+      - "32770:8081"
     environment:
       ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_MONGODB_PORT: 27017
