@@ -2,9 +2,9 @@ manifestVersion: 1
 id: umbrel-br-p2ptruscore
 name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
-icon: https://raw.githubusercontent.com/logos/telegram-bot-api/master/logo.svg
+icon: https://core.telegram.org/file/464001466/1/bLxp0D7Y8Ng/8d8b7a96c1ab928554
 category: Social
-version: "1.0.0"
+version: "1.0.1"
 port: 3000
 description: >-
   🤖 P2P TrustScore - Um moderno bot de karma para Telegram!
@@ -27,10 +27,6 @@ description: >-
   
   📊 USA MONGODB LOCAL
   Este app se conecta automaticamente ao MongoDB instalado no seu Umbrel.
-  
-  🔗 API disponível na porta configurada para integração com Mini Apps.
-  
-  Baseado em NestJS com TypeScript, seguindo princípios SOLID.
 
 developer: Samyr Wendel
 website: https://github.com/samyrwendel/p2ptruscore
@@ -40,14 +36,10 @@ repo: https://github.com/samyrwendel/p2ptruscore
 support: https://github.com/samyrwendel/p2ptruscore/issues
 gallery:
   - https://core.telegram.org/file/464001466/1/bLxp0D7Y8Ng/8d8b7a96c1ab928554
-  - https://core.telegram.org/file/464001863/1/2USyBzp3shE/76dd60cf1b7c89a5f6
 releaseNotes: >-
-  Versão inicial do P2P TrustScore Bot para Umbrel.
+  Versão 1.0.1 - Correções de instalação
   
-  - Sistema completo de karma/reputação
-  - Integração com MongoDB local
-  - API para Mini Apps
-  - Interface em português
-  
-  IMPORTANTE: Configure as variáveis TELEGRAM_BOT_TOKEN e TELEGRAM_BOT_USERNAME após a instalação.
+  - Ajuste no ícone do app
+  - Otimização do processo de build
+  - Melhoria na inicialização
 torOnly: false
