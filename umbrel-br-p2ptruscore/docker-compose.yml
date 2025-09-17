@@ -8,9 +8,20 @@ services:
     command: >
       sh -c "
         echo 'P2P TrustScore Bot - Iniciando...' &&
-        echo 'Clonando repositório...' &&
+        echo 'Preparando ambiente...' &&
         apk add --no-cache git &&
-        git clone https://github.com/samyrwendel/p2ptruscore.git /app &&
+        
+        if [ ! -f /app/package.json ]; then
+          echo 'Primeira execução - Clonando repositório...' &&
+          rm -rf /app/* /app/.* 2>/dev/null || true &&
+          git clone https://github.com/samyrwendel/p2ptruscore.git /app &&
+          echo '✅ Repositório clonado!'
+        else
+          echo '✅ Código já existe, atualizando...' &&
+          cd /app &&
+          git pull origin main || true
+        fi &&
+        
         cd /app &&
         echo 'Instalando dependências...' &&
         npm install &&
@@ -22,6 +33,7 @@ services:
     
     volumes:
       - ${APP_DATA_DIR}/data:/data
+      - ${APP_DATA_DIR}/app:/app
     
     environment:
       NODE_ENV: production
