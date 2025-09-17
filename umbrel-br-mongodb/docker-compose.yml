@@ -4,8 +4,8 @@ services:
   app_proxy:
     image: "ghcr.io/umbrel/app-proxy:v1.0.0"
     environment:
-      APP_HOST: ${APP_MONGODB_IP}
-      APP_PORT: ${APP_MONGODB_PORT}
+      APP_HOST: web
+      APP_PORT: 8081
       PROXY_AUTH_ADD: "false"
 
   mongo:
@@ -24,7 +24,7 @@ services:
     depends_on:
       - mongo
     ports:
-      - "${APP_MONGODB_PORT}:8081"
+      - "${APP_HOST_PORT}:8081"
     environment:
       ME_CONFIG_MONGODB_SERVER: mongo
       ME_CONFIG_MONGODB_PORT: 27017
