@@ -1,34 +1,70 @@
 # MongoDB para Umbrel
 
-Banco de dados MongoDB com interface web Mongo Express.
+MongoDB com interface visual Mongo Express.
 
-## Como usar
+## Credenciais Padrão
 
-### Sem senha (padrão - desenvolvimento)
-- Conexão: `mongodb://umbrel.local:27017`
-- Interface web: Clique em "Abrir" no app
+- **Usuário**: `admin`
+- **Senha**: `umbrel`
 
-### Com senha (produção)
-1. SSH no Umbrel: `ssh umbrel@umbrel.local`
+⚠️ **IMPORTANTE**: Mude a senha padrão após a primeira instalação!
+
+## Como Mudar a Senha
+
+### Método 1: Via MongoDB Shell
+
+1. Acesse o terminal SSH do Umbrel
+2. Entre no container do MongoDB:
+```bash
+docker exec -it umbrel-br-mongodb_mongo_1 mongosh
+```
+
+3. Autentique como admin:
+```javascript
+use admin
+db.auth('admin', 'umbrel')
+```
+
+4. Mude a senha:
+```javascript
+db.changeUserPassword('admin', 'NOVA_SENHA_AQUI')
+```
+
+5. Saia do MongoDB:
+```javascript
+exit
+```
+
+### Método 2: Editando o docker-compose.yml
+
+1. SSH no Umbrel
 2. Edite o arquivo:
-   ```bash
-   cd ~/umbrel/app-data/umbrel-br-mongodb
-   nano docker-compose.yml
-   ```
-3. Descomente as linhas de senha e defina suas credenciais:
-   ```yaml
-   MONGO_INITDB_ROOT_USERNAME=admin
-   MONGO_INITDB_ROOT_PASSWORD=suasenhaforte
-   ```
-4. Reinicie o app pelo painel do Umbrel
-5. Conexão: `mongodb://admin:suasenhaforte@umbrel.local:27017/?authSource=admin`
+```bash
+nano ~/umbrel/app-data/umbrel-br-mongodb/docker-compose.yml
+```
 
-## Problemas comuns
+3. Mude as linhas:
+```yaml
+MONGO_INITDB_ROOT_PASSWORD: sua_nova_senha
+ME_CONFIG_MONGODB_ADMINPASSWORD: sua_nova_senha
+```
 
-### Porta em conflito
-Se a interface não abrir, pode ser conflito de porta. O app usa a porta 3333 internamente.
+4. Reinicie o app no Umbrel
 
-### Resetar senha
-1. Pare o app
-2. Delete o volume: `docker volume rm umbrel-br-mongodb_mongodb-data`
-3. Inicie o app novamente
+## Conectar ao MongoDB
+
+### MongoDB Compass
+```
+mongodb://admin:umbrel@umbrel.local:27017/?authSource=admin
+```
+
+### Aplicações
+```javascript
+const uri = "mongodb://admin:umbrel@umbrel.local:27017/?authSource=admin";
+```
+
+## Segurança
+
+- Sempre mude a senha padrão
+- Use senhas fortes
+- Considere limitar acesso por IP se necessário
