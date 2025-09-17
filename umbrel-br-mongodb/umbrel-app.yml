@@ -4,15 +4,17 @@ name: MongoDB
 tagline: Banco de dados NoSQL com interface visual
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "8.0.1"
+version: "8.0.2"
 port: 8081
 description: >-
-  MongoDB 7 com autenticação e senha gerada automaticamente.
+  MongoDB 7 com autenticação habilitada.
   
-  ✅ MongoDB Compass: mongodb://admin:SENHA@umbrel.local:27017/?authSource=admin
+  ⚠️ IMPORTANTE: Mude a senha padrão após a instalação!
+  
+  ✅ MongoDB Compass: mongodb://admin:umbrel@umbrel.local:27017/?authSource=admin
   ✅ Mongo Express: Interface web incluída (já autenticada)
   
-  A senha é gerada automaticamente e mostrada na página do app.
+  Consulte o README para instruções de como mudar a senha.
 
 developer: MongoDB
 website: https://www.mongodb.com
@@ -22,5 +24,6 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Versão 8.0.1 - Correção da exibição da senha gerada.
+  Versão 8.0.2 - Senha padrão 'umbrel' com instruções para mudança.
 defaultUsername: admin
+defaultPassword: umbrel
