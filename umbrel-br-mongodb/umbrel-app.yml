@@ -4,12 +4,13 @@ name: MongoDB
 tagline: Banco de dados NoSQL com interface visual
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.2.6"
+version: "7.2.7"
+port: 32770
 description: >-
   MongoDB 7 SEM AUTENTICAÇÃO para desenvolvimento local.
   
   ✅ MongoDB Compass: mongodb://umbrel.local:27017
-  ✅ Mongo Express: Interface web incluída
+  ✅ Mongo Express: http://umbrel.local:32770
   
   Para adicionar senha depois, edite o docker-compose.yml
 
@@ -21,4 +22,4 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Versão 7.2.6 - App proxy completo com imagem oficial do Umbrel.
+  Versão 7.2.7 - Porta fixa 32770 para Mongo Express.
