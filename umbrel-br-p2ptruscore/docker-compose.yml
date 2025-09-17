@@ -25,6 +25,8 @@ services:
         cd /app &&
         echo 'Instalando dependências...' &&
         npm install &&
+        echo 'Instalando NestJS CLI...' &&
+        npm install -g @nestjs/cli &&
         echo 'Compilando...' &&
         npm run build &&
         echo 'Bot pronto! Iniciando...' &&
