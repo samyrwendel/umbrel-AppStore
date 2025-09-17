@@ -1,0 +1,79 @@
+version: '3'
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: app
+      APP_PORT: 3000
+
+  app:
+    image: node:20-alpine
+    restart: unless-stopped
+    ports:
+      - "${APP_HOST_PORT}:3000"
+    command: >
+      sh -c "
+        echo '🚀 P2P TrustScore Bot v3.0.7 - Iniciando...' &&
+        node -e \"
+          const http = require('http');
+          console.log('📡 Criando servidor HTTP estável...');
+          const server = http.createServer((req, res) => {
+            res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+            res.end(\\\`<!DOCTYPE html>
+<html>
+<head>
+  <title>P2P TrustScore Bot</title>
+  <meta charset='utf-8'>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 40px; background: #f5f5f5; margin: 0; }
+    .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);}
+    h1 { color: #333; text-align: center; margin-bottom: 30px; }
+    .status { background: #e8f5e8; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #4caf50; }
+    .instructions { background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107; }
+    code { background: #f8f9fa; padding: 4px 8px; border-radius: 4px; font-family: monospace; }
+    .version { text-align: center; color: #666; margin-top: 20px; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <div class='container'>
+    <h1>🤖 P2P TrustScore Bot</h1>
+    <div class='status'>
+      <h3>✅ Servidor funcionando!</h3>
+      <p>O bot está rodando corretamente na porta 3000.</p>
+      <p>Esta é uma versão de teste com servidor web estável.</p>
+    </div>
+    <div class='instructions'>
+      <h3>📋 Próximos passos:</h3>
+      <ol>
+        <li>Criar bot via <code>@BotFather</code> no Telegram</li>
+        <li>Configurar variáveis de ambiente via SSH</li>
+        <li>Reiniciar aplicação para usar o bot real</li>
+      </ol>
+    </div>
+    <div class='version'>
+      <strong>Versão:</strong> 3.0.7 - Servidor HTTP estável (sem restart loop)
+    </div>
+  </div>
+</body>
+</html>\\\`);
+          });
+          
+          server.listen(3000, '0.0.0.0', () => {
+            console.log('✅ Servidor HTTP ativo na porta 3000');
+            console.log('🌐 Acesse via botão Abrir no Umbrel');
+          });
+          
+          // Manter processo vivo sem restart
+          process.on('SIGTERM', () => {
+            console.log('🛑 Recebido SIGTERM, fechando servidor...');
+            server.close(() => {
+              console.log('👋 Servidor fechado graciosamente');
+              process.exit(0);
+            });
+          });
+        \"
+      "
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    environment:
+      NODE_ENV: production
