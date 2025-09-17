@@ -1,51 +1,36 @@
 version: '3'
 
 services:
-  server:
+  bot:
     image: node:18-alpine
     restart: unless-stopped
     
-    # Comando mais simples
     command: >
       sh -c "
-        echo 'P2P TrustScore Bot - Aguardando configuração...' &&
-        echo 'Por favor, configure as variáveis TELEGRAM_BOT_TOKEN e TELEGRAM_BOT_USERNAME' &&
-        echo 'Veja as instruções no README do app' &&
-        while true; do
-          if [ -f /app/.env ]; then
-            echo 'Arquivo de configuração encontrado!' &&
-            cd /app &&
-            if [ ! -f package.json ]; then
-              echo 'Baixando código do bot...' &&
-              apk add --no-cache git &&
-              git clone https://github.com/samyrwendel/p2ptruscore.git . &&
-              npm install &&
-              npm run build
-            fi &&
-            echo 'Iniciando bot...' &&
-            npm run start:prod
-          else
-            echo 'Aguardando arquivo de configuração em /app/.env...' &&
-            sleep 30
-          fi
-        done
-      "
+        cd /app &&
+        if [ ! -f package.json ]; then
+          echo 'Primeira execução - Clonando repositório...' &&
+          apk add --no-cache git &&
+          git clone https://github.com/samyrwendel/p2ptruscore.git . &&
+          echo 'Instalando dependências...' &&
+          npm install &&
+          echo 'Compilando aplicação...' &&
+          npm run build
+        fi &&
+        echo 'P2P TrustScore Bot - Iniciando...' &&
+        if [ -f /data/.env ]; then
+          cp /data/.env /app/.env
+        fi &&
+        npm run start:prod || echo 'Bot precisa ser configurado - veja o README'"
     
     volumes:
-      - ${APP_DATA_DIR}/data:/app
+      - ${APP_DATA_DIR}/app:/app
+      - ${APP_DATA_DIR}/data:/data
     
     environment:
       NODE_ENV: production
       PORT: 3000
-      MONGODB_CNN: mongodb://admin:umbrel@umbrel-br-mongodb_mongo_1:27017/p2ptruscore?authSource=admin
+      MONGODB_CNN: mongodb://admin:umbrel@host.docker.internal:27017/p2ptruscore?authSource=admin
     
     ports:
       - "${APP_HOST_PORT}:3000"
-    
-    networks:
-      - default
-
-networks:
-  default:
-    name: umbrel_main_network
-    external: true
