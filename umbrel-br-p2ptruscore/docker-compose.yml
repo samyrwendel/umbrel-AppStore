@@ -1,56 +1,31 @@
 version: '3'
 
 services:
-  app_proxy:
-    image: "ghcr.io/umbrel/app-proxy:v1.0.0"
-    environment:
-      APP_HOST: bot
-      APP_PORT: 3000
-      PROXY_AUTH_ADD: "false"
-
   bot:
     image: node:20-alpine
     restart: unless-stopped
-    working_dir: /app
     
     command: >
       sh -c "
-        echo '🤖 Preparando P2P TrustScore Bot com interface web...' &&
-        
-        if [ ! -f /app/package.json ]; then
-          echo 'Primeira execução - Clonando repositório...' &&
-          apk add --no-cache git &&
-          git clone https://github.com/samyrwendel/p2ptruscore.git /tmp/bot &&
-          cp -r /tmp/bot/* /app/ &&
-          rm -rf /tmp/bot &&
-          echo '✅ Código clonado!'
-        fi &&
-        
-        if [ ! -d /app/node_modules ]; then
-          echo 'Instalando dependências (isso pode demorar)...' &&
-          cd /app &&
-          npm install --production=false &&
-          echo '✅ Dependências instaladas!'
-        fi &&
-        
-        if [ ! -d /app/dist ]; then
-          echo 'Compilando aplicação...' &&
-          cd /app &&
-          npx nest build || npm run build &&
-          echo '✅ Aplicação compilada!'
-        fi &&
-        
-        echo '🌐 Iniciando bot com interface web de configuração...' &&
+        echo 'P2P TrustScore Bot - Iniciando...' &&
+        echo 'Clonando repositório...' &&
+        apk add --no-cache git &&
+        git clone https://github.com/samyrwendel/p2ptruscore.git /app &&
         cd /app &&
+        echo 'Instalando dependências...' &&
+        npm install &&
+        echo 'Compilando...' &&
+        npm run build &&
+        echo 'Bot pronto! Iniciando...' &&
         npm run start:prod
       "
     
     volumes:
-      - ${APP_DATA_DIR}/app:/app
       - ${APP_DATA_DIR}/data:/data
     
     environment:
       NODE_ENV: production
+      PORT: 3000
       MONGODB_CNN: mongodb://admin:umbrel@host.docker.internal:27017/p2ptrustscore?authSource=admin
     
     ports:
