@@ -4,15 +4,15 @@ name: MongoDB
 tagline: Banco de dados NoSQL com interface visual
 icon: https://raw.githubusercontent.com/mongodb/mongo/master/docs/leaf.svg
 category: Development
-version: "7.2.1"
+version: "8.0.0"
 port: 8081
 description: >-
-  MongoDB 7 SEM AUTENTICAÇÃO para desenvolvimento local.
+  MongoDB 7 com autenticação e senha gerada automaticamente.
   
-  ✅ MongoDB Compass: mongodb://umbrel.local:27017
-  ✅ Mongo Express: Interface web incluída
+  ✅ MongoDB Compass: mongodb://admin:SENHA@umbrel.local:27017/?authSource=admin
+  ✅ Mongo Express: Interface web incluída (já autenticada)
   
-  Para adicionar senha depois, edite o docker-compose.yml
+  A senha é mostrada na página do app no Umbrel.
 
 developer: MongoDB
 website: https://www.mongodb.com
@@ -22,4 +22,6 @@ support: https://github.com/mongodb/mongo/issues
 gallery:
   - https://webassets.mongodb.com/_com_assets/cms/mongodb_logo1-76twgcu2dm.png
 releaseNotes: >-
-  Versão 7.2.1 - Porta do Mongo Express corrigida para acessar interface web.
+  Versão 8.0.0 - Autenticação habilitada com senha gerada automaticamente pelo Umbrel.
+defaultUsername: admin
+defaultPassword: ${APP_PASSWORD}
