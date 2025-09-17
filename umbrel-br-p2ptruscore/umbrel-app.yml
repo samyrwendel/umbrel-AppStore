@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma para Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "1.0.5"
+version: "1.0.6"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -17,5 +17,39 @@ dependencies: []
 repo: https://github.com/samyrwendel/p2ptruscore
 support: https://github.com/samyrwendel/p2ptruscore/issues
 releaseNotes: >-
-  Versão 1.0.5 - Corrige travamento na instalação
+  ## O que há de novo:
+  
+  ### v1.0.6 (Atual)
+  - Melhorado controle de versões nas release notes
+  
+  ### v1.0.5
+  - Corrigido travamento na instalação de dependências
+  - Removida instalação global do NestJS CLI
+  - Usa npx para compilação
+  - Melhor tratamento de erros
+  
+  ### v1.0.4
+  - Corrigido problema de Node.js e NestJS CLI
+  - Usa Node.js 20 e instala o NestJS CLI globalmente
+  - Otimizações no processo de build
+  
+  ### v1.0.3
+  - Simplificada estrutura do docker-compose
+  - Removidas dependências complexas
+  - MongoDB via host.docker.internal
+  
+  ### v1.0.2
+  - Removida dependência do MongoDB da instalação
+  - Simplificado comando de inicialização
+  
+  ### v1.0.1
+  - Trocado ícone SVG por PNG
+  - Simplificado docker-compose
+  - Adicionados logs de progresso
+  
+  ### v1.0.0
+  - Versão inicial do bot
+  - Clona repositório do GitHub
+  - Conecta ao MongoDB local
+  - API REST para Mini Apps
 torOnly: false
