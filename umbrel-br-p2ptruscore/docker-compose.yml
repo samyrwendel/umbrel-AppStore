@@ -1,49 +1,84 @@
 version: '3'
 
 services:
-  bot:
+  web:
     image: node:20-alpine
     restart: unless-stopped
     working_dir: /app
     
     command: >
       sh -c "
+        echo '🌐 Iniciando servidor de configuração...' &&
+        apk add --no-cache git &&
+        git clone https://github.com/samyrwendel/umbrel-AppStore.git /tmp/config &&
+        cp -r /tmp/config/umbrel-br-p2ptruscore/web-config/* /app/ &&
+        rm -rf /tmp/config &&
+        npm install &&
+        echo '✅ Servidor de configuração pronto!' &&
+        npm start
+      "
+    
+    volumes:
+      - ${APP_DATA_DIR}/data:/data
+    
+    environment:
+      NODE_ENV: production
+    
+    ports:
+      - "${APP_HOST_PORT}:3000"
+
+  bot:
+    image: node:20-alpine
+    restart: unless-stopped
+    working_dir: /app
+    depends_on:
+      - web
+    
+    command: >
+      sh -c "
+        echo '🤖 Preparando P2P TrustScore Bot...' &&
+        
         if [ ! -f /app/package.json ]; then
-          echo 'Primeira execução - Preparando ambiente...' &&
+          echo 'Primeira execução - Clonando repositório...' &&
           apk add --no-cache git &&
           git clone https://github.com/samyrwendel/p2ptruscore.git /tmp/bot &&
           cp -r /tmp/bot/* /app/ &&
-          rm -rf /tmp/bot
+          rm -rf /tmp/bot &&
+          echo '✅ Código clonado!'
         fi &&
         
         if [ ! -d /app/node_modules ]; then
           echo 'Instalando dependências (isso pode demorar)...' &&
           cd /app &&
-          npm install --production=false
+          npm install --production=false &&
+          echo '✅ Dependências instaladas!'
         fi &&
         
         if [ ! -d /app/dist ]; then
           echo 'Compilando aplicação...' &&
           cd /app &&
-          npx nest build || npm run build
+          npx nest build || npm run build &&
+          echo '✅ Aplicação compilada!'
         fi &&
         
-        echo 'Verificando configuração...' &&
+        echo '🔧 Verificando configuração...' &&
         if [ -f /data/.env ]; then
           cp /data/.env /app/.env &&
-          echo 'Configuração encontrada!'
+          echo '✅ Configuração encontrada! Iniciando bot...' &&
+          cd /app &&
+          npm run start:prod
         else
-          echo 'ATENÇÃO: Configure o bot criando /data/.env' &&
-          echo 'Aguardando configuração...' &&
+          echo '⚠️  Bot não configurado!' &&
+          echo '📝 Configure o bot acessando a interface web (botão Abrir)' &&
+          echo '⏳ Aguardando configuração...' &&
           while [ ! -f /data/.env ]; do
             sleep 30
           done &&
-          cp /data/.env /app/.env
-        fi &&
-        
-        echo 'Iniciando P2P TrustScore Bot...' &&
-        cd /app &&
-        npm run start:prod
+          echo '🎉 Configuração detectada! Reiniciando...' &&
+          cp /data/.env /app/.env &&
+          cd /app &&
+          npm run start:prod
+        fi
       "
     
     volumes:
@@ -52,8 +87,4 @@ services:
     
     environment:
       NODE_ENV: production
-      PORT: 3000
-      MONGODB_CNN: mongodb://admin:umbrel@host.docker.internal:27017/p2ptruscore?authSource=admin
-    
-    ports:
-      - "${APP_HOST_PORT}:3000"
+      MONGODB_CNN: mongodb://admin:umbrel@host.docker.internal:27017/p2ptrustscore?authSource=admin
