@@ -4,14 +4,14 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://raw.githubusercontent.com/logos/telegram-bot-api/master/logo.svg
 category: Social
-version: "3.0.7"
+version: "3.0.8"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
   
   ✅ Interface web funcionando! Clique em "Abrir" para acessar.
   
-  Versão de teste com servidor HTTP estável (sem restart loop).
+  Versão de teste com servidor HTTP estável (YAML corrigido).
   
   📋 PRÓXIMOS PASSOS:
   1. Criar bot no @BotFather
@@ -29,11 +29,14 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v3.0.7 (Atual) 🛠️
-  - CORREÇÃO CRÍTICA: Servidor HTTP estável sem restart loop
-  - Comando Node.js inline otimizado
-  - Process handling correto com SIGTERM
-  - Interface web funcional garantida
+  ### v3.0.8 (Atual) 🔧
+  - CORREÇÃO CRÍTICA: YAML válido, sem erros de sintaxe
+  - Servidor HTTP usando arquivo temporário (não inline)
+  - Estrutura limpa e funcional garantida
+  - Interface web 100% estável
+  
+  ### v3.0.7 🛠️
+  - Tentativa com Node.js inline (problema de YAML)
   
   ### v3.0.6 ✅
   - Serviço renomeado de 'bot' para 'app' (padrão UmbrelOS)
