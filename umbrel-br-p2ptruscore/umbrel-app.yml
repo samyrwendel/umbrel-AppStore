@@ -4,8 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma para Telegram com interface de configuração
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "2.0.0"
-port: 3000
+version: "2.0.1"
 description: >-
   Bot de karma/reputação para grupos do Telegram construído com NestJS e TypeScript.
   
@@ -29,7 +28,12 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v2.0.0 (Atual) 🎉
+  ### v2.0.1 (Atual) 🔧
+  - Corrigido problema do botão "Abrir" não funcionar
+  - Adicionado app_proxy (igual ao MongoDB)
+  - Interface web agora acessível via botão Abrir
+  
+  ### v2.0.0 🎉
   - ✨ NOVA FUNCIONALIDADE: Interface web para configuração!
   - 🚀 Clique em "Abrir" para configurar o bot facilmente
   - 🎨 Interface bonita e intuitiva para editar credenciais
@@ -42,17 +46,8 @@ releaseNotes: >-
   - Adicionadas imagens na galeria
   - Melhorada descrição do app
   
-  ### v1.0.6
-  - Melhorado controle de versões nas release notes
-  
-  ### v1.0.5
-  - Corrigido travamento na instalação de dependências
-  - Removida instalação global do NestJS CLI
-  - Usa npx para compilação
-  - Melhor tratamento de erros
-  
-  ### Versões anteriores (v1.0.0 - v1.0.4)
+  ### Versões anteriores (v1.0.0 - v1.0.6)
   - Implementação inicial do bot
   - Correções de instalação e compilação
-  - Melhorias de estabilidade
+  - Melhorias de estabilidade e controle de versões
 torOnly: false
