@@ -1,100 +1,74 @@
 # P2P TrustScore Bot para Umbrel
 
-Bot de karma/reputação para grupos do Telegram, agora disponível no Umbrel!
+Bot de karma/reputação para grupos do Telegram.
 
 ## 🚀 Instalação Rápida
 
-1. **Instale o MongoDB primeiro** (se ainda não tiver)
-   - Vá até a loja de apps do Umbrel
-   - Instale o app "MongoDB" da nossa loja
+1. **Instale o app** pela loja do Umbrel
 
-2. **Instale o P2P TrustScore Bot**
-   - Encontre e instale o app na loja
-
-3. **Configure o Bot**
-   - Crie um bot no Telegram via [@BotFather](https://t.me/botfather)
-   - Anote o token e o username do bot
-
-## ⚙️ Configuração
-
-### 1. Criar arquivo de configuração
-
-SSH no seu Umbrel e execute:
+2. **Configure o bot** via SSH:
 
 ```bash
-# Navegue até a pasta do app
-cd ~/umbrel/app-data/umbrel-br-p2ptruscore
+# Acesse o Umbrel
+ssh umbrel@umbrel.local
 
-# Crie a pasta de configuração
-mkdir -p config
+# Vá para a pasta de dados do app
+cd ~/umbrel/app-data/umbrel-br-p2ptruscore/data
 
-# Crie o arquivo .env
-nano config/.env
+# Crie o arquivo de configuração
+nano .env
 ```
 
-### 2. Adicione as variáveis obrigatórias:
+3. **Adicione suas credenciais:**
 
 ```env
-# Token do Bot (obrigatório)
+# Obrigatório - Token do @BotFather
 TELEGRAM_BOT_TOKEN=123456789:ABCdefGHIjklMNOpqrsTUVwxyz
 
-# Username do Bot sem @ (obrigatório)
+# Obrigatório - Username sem @
 TELEGRAM_BOT_USERNAME=MeuP2PBot
+
+# Opcional - se quiser usar outro MongoDB
+# MONGODB_CNN=mongodb://user:pass@host:27017/dbname
 ```
 
-### 3. Reinicie o app
+4. **Reinicie o app:**
 
 ```bash
-# Via Umbrel UI ou SSH:
 cd ~/umbrel
 sudo ./scripts/app restart umbrel-br-p2ptruscore
 ```
 
-## 📱 Como Usar
+## 📱 Comandos do Bot
 
-1. **Adicione o bot ao seu grupo**
-2. **Comandos disponíveis:**
-   - Responda `+1` ou `-1` para dar/tirar karma
-   - `/me` - Ver seu status
-   - `/melhorscore` - Top 10 usuários
-   - `/piorscore` - 10 piores scores
-   - `/hoje` - Melhores das últimas 24h
-   - `/mes` - Melhores dos últimos 30 dias
-   - `/ano` - Melhores do ano
-   - `/transferir <quantidade>` - Transferir pontos
-   - `/history` - Seu histórico
-   - `/comandos` - Lista todos os comandos
+- Responda `+1` ou `-1` para dar/tirar karma
+- `/me` - Ver seu status
+- `/melhorscore` - Top 10 usuários
+- `/piorscore` - 10 piores scores
+- `/hoje` - Melhores das últimas 24h
+- `/mes` - Melhores dos últimos 30 dias
+- `/ano` - Melhores do ano
+- `/transferir <quantidade>` - Transferir pontos
+- `/history` - Seu histórico
+- `/comandos` - Lista todos os comandos
 
-## 🔧 Logs e Debug
-
-Para ver os logs do bot:
+## 🔧 Verificar Logs
 
 ```bash
-# Via SSH
 docker logs umbrel-br-p2ptruscore_bot_1 -f
 ```
 
 ## 🌐 API para Mini Apps
 
-A API está disponível na porta mostrada no Umbrel para integração com Telegram Mini Apps.
+A API estará disponível na porta mostrada no Umbrel.
 
-Endpoints principais:
-- `GET /api/karma/top` - Top usuários
-- `GET /api/users/:userId` - Dados do usuário
-- E muito mais...
+## ⚠️ Problemas?
 
-## ⚠️ Problemas Comuns
-
-### Bot não responde
-- Verifique se o token está correto
-- Confirme que o username não tem @
-- Veja os logs para erros
-
-### Erro de conexão MongoDB
-- Certifique-se que o MongoDB está instalado e rodando
-- A senha padrão é `umbrel`
+Se o bot não iniciar:
+1. Verifique se o token está correto
+2. Confirme que o username não tem @
+3. Veja os logs para identificar erros
 
 ## 📞 Suporte
 
-- [Issues no GitHub](https://github.com/samyrwendel/p2ptruscore/issues)
-- [Código fonte](https://github.com/samyrwendel/p2ptruscore)
+- [GitHub do Projeto](https://github.com/samyrwendel/p2ptruscore)
