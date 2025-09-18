@@ -8,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v6.0.0 - FORÇA REINSTALAÇÃO..."
+        echo "🚀 P2P TrustScore Bot v10.0.0 - VERSÃO MEGA PARA FORÇAR..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
