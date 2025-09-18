@@ -4,21 +4,20 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "4.1.0"
+version: "4.2.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
   
   ✅ Interface web funcionando! Clique em "Abrir" para acessar.
   
-  🌐 INTERFACE WEB DE CONFIGURAÇÃO: Acesse /api/config para configurar!
+  🌐 SEM PROXY: Conexão direta na porta 3000 (mais confiável).
   
   📋 COMO USAR:
   1. Clique "Abrir" para acessar a interface
-  2. Vá para /api/config para configurar TOKEN e USERNAME
+  2. Vá para /api/config para configurar TOKEN e USERNAME  
   3. Crie um bot no @BotFather e cole o token
-  4. Salve as configurações via interface web
-  5. O bot estará pronto para uso!
+  4. Interface básica funcionando mesmo sem build completo
 
 developer: Samyr Wendel
 website: https://github.com/samyrwendel/p2ptruscore
@@ -31,13 +30,15 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v4.1.0 (Atual) 🚀
-  - FORÇA ATUALIZAÇÃO: Versão maior para forçar update no Umbrel
-  - CORREÇÃO TRAVAMENTO: Remove instalação global que travava
-  - Timeout de 60s no build para evitar travamentos  
-  - Servidor HTTP simples mais robusto como fallback
-  - Instalação única de dependências (mais rápido)
-  - Interface web garantida (mesmo em modo manutenção)
+  ### v4.2.0 (Atual) 🔌
+  - SEM PROXY: Remove app_proxy que causava ECONNREFUSED
+  - Porta direta 3000:3000 (como Excalidraw e outros apps)
+  - Mais simples e confiável (sem camada intermediária)
+  - Servidor HTTP funcionando com fallback robusto
+  - Interface web garantida sempre
+  
+  ### v4.1.0 🚀
+  - Força atualização com timeout e fallback
   
   ### v4.0.2 🛠️
   - Tentativa com @types/node (travava na instalação global)

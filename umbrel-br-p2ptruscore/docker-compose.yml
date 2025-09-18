@@ -1,11 +1,6 @@
 version: '3'
 
 services:
-  app_proxy:
-    environment:
-      APP_HOST: app
-      APP_PORT: 3000
-
   app:
     image: node:20-alpine
     restart: unless-stopped
@@ -13,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v4.1.0 - FORÇA ATUALIZAÇÃO..."
+        echo "🚀 P2P TrustScore Bot v4.2.0 - SEM PROXY (porta direta)..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -51,6 +46,8 @@ services:
           });
           "
         fi
+    ports:
+      - "3000:3000"
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
