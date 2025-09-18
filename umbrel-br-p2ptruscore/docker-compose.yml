@@ -8,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v4.2.0 - SEM PROXY (porta direta)..."
+        echo "🚀 P2P TrustScore Bot v4.3.0 - PULA BUILD (servidor direto)..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -18,19 +18,10 @@ services:
           cd /app && git pull origin main
         fi
         cd /app
-        echo "📦 Instalando todas as dependências..."
-        npm install
-        echo "🏗️ Tentando compilar com npx (sem instalação global)..."
-        timeout 60 npx @nestjs/cli build || echo "⚠️ Build demorou muito ou falhou..."
-        echo "🔍 Verificando se build foi criado..."
-        if [ -f "/app/dist/main.js" ]; then
-          echo "✅ Build criado com sucesso!"
-          echo "🌐 Iniciando servidor com interface de configuração..."
-          echo "✅ Acesse /api/config para configurar o bot"
-          npm run start:prod
-        else
-          echo "❌ Build falhou, iniciando servidor HTTP simples..."
-          node -e "
+        echo "📦 Instalando apenas dependências essenciais..."
+        npm install express --save
+        echo "🚀 Pulando build - iniciando servidor HTTP direto..."
+        node -e "
           const http = require('http');
           const server = http.createServer((req, res) => {
             res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
@@ -45,7 +36,6 @@ services:
             console.log('🌐 Acesse via botão Abrir no Umbrel');
           });
           "
-        fi
     ports:
       - "3000:3000"
     volumes:

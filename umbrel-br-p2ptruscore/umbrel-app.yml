@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "4.2.0"
+version: "4.3.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -30,12 +30,15 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v4.2.0 (Atual) 🔌
-  - SEM PROXY: Remove app_proxy que causava ECONNREFUSED
-  - Porta direta 3000:3000 (como Excalidraw e outros apps)
-  - Mais simples e confiável (sem camada intermediária)
-  - Servidor HTTP funcionando com fallback robusto
-  - Interface web garantida sempre
+  ### v4.3.0 (Atual) ⚡
+  - PULA BUILD: Vai direto para servidor HTTP (sem build NestJS)
+  - Instala apenas Express (rápido e leve)
+  - Sem travamentos na instalação do @nestjs/cli
+  - Servidor HTTP garantido sempre funciona
+  - Interface web básica mas operacional
+  
+  ### v4.2.0 🔌
+  - Remove app_proxy (porta direta 3000:3000)
   
   ### v4.1.0 🚀
   - Força atualização com timeout e fallback
