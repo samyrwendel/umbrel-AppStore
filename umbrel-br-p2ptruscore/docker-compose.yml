@@ -5,12 +5,12 @@ services:
     image: node:20-alpine
     restart: unless-stopped
     ports:
-      - "${APP_HOST_PORT}:3000"
+      - "3000"
     command: 
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v3.1.1 - Debug completo..."
+        echo "🚀 P2P TrustScore Bot v3.1.2 - CORREÇÃO FINAL..."
         echo "📊 Variáveis de ambiente:"
         echo "   APP_HOST_PORT: ${APP_HOST_PORT}"
         echo "   NODE_ENV: ${NODE_ENV}"
