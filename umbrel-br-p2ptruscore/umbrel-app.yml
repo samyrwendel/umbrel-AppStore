@@ -4,14 +4,14 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "3.1.0"
+version: "3.1.1"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
   
   ✅ Interface web funcionando! Clique em "Abrir" para acessar.
   
-  Versão simplificada sem app_proxy (conexão direta).
+  Versão com debug completo para diagnóstico de rede.
   
   📋 PRÓXIMOS PASSOS:
   1. Criar bot no @BotFather
@@ -29,10 +29,15 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v3.1.0 (Atual) 🔧
-  - CORREÇÃO CRÍTICA: Remove app_proxy que estava causando ECONNREFUSED
-  - Conexão direta via porta mapeada (mais simples e confiável)
-  - Deve resolver o erro de proxy definitivamente
+  ### v3.1.1 (Atual) 🔍
+  - DEBUG COMPLETO: Logs detalhados de rede e sistema
+  - Mostra APP_HOST_PORT, interfaces de rede, hostname
+  - Teste de conectividade interna automático
+  - Para diagnóstico de problemas de porta
+  
+  ### v3.1.0 🔧
+  - Remove app_proxy (ECONNREFUSED)
+  - Conexão direta via porta mapeada
   
   ### v3.0.9 🎨
   - Ícone oficial do Telegram funcionando
