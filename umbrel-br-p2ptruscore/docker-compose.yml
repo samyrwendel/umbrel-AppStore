@@ -8,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v5.4.0 - CRIA .ENV AUTOMATICAMENTE..."
+        echo "🚀 P2P TrustScore Bot v5.5.0 - REMOVE VARIÁVEIS HARDCODED..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -29,10 +29,11 @@ services:
         echo "📝 Criando arquivo .env com configurações padrão..."
         cat > .env << 'EOF'
 # Configuração P2P TrustScore Bot - Umbrel
-TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
-TELEGRAM_BOT_USERNAME=${TELEGRAM_BOT_USERNAME}
-MONGODB_CNN=${MONGODB_CNN}
-PORT=${PORT}
+# IMPORTANTE: Configure via interface web
+TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB
+TELEGRAM_BOT_USERNAME=CONFIGURE_VIA_WEB
+MONGODB_CNN=mongodb://admin:umbrel@mongo:27017/p2ptruscore?authSource=admin
+PORT=3000
 NODE_ENV=production
 EOF
         echo "🔍 Verificando arquivo .env criado..."
@@ -45,8 +46,4 @@ EOF
       - ${APP_DATA_DIR}/data:/data
     environment:
       NODE_ENV: production
-      # Variáveis temporárias para permitir inicialização
-      TELEGRAM_BOT_TOKEN: "CONFIGURE_VIA_WEB"
-      TELEGRAM_BOT_USERNAME: "CONFIGURE_VIA_WEB"
-      MONGODB_CNN: "mongodb://admin:umbrel@mongo:27017/p2ptruscore?authSource=admin"
-      PORT: "3000"
+      # Sem variáveis hardcoded - usa apenas arquivo .env
