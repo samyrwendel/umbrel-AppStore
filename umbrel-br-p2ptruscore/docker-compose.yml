@@ -8,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v4.4.0 - CÓDIGO REAL (interface web do Git)..."
+        echo "🚀 P2P TrustScore Bot v4.5.0 - DEVDEPENDENCIES CORRETAS..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -18,10 +18,14 @@ services:
           cd /app && git pull origin main
         fi
         cd /app
-        echo "📦 Instalando dependências para rodar o código real..."
-        npm install
+        echo "📦 Instalando TODAS as dependências (prod + dev)..."
+        npm install --include=dev
+        echo "🔧 Verificando se devDependencies foram instaladas..."
+        npm list cross-env @nestjs/cli @types/node || echo "⚠️ Algumas devDependencies faltando"
         echo "🌐 Iniciando servidor NestJS em modo desenvolvimento..."
-        npm run start:dev || npm run start || node src/main.js || echo "❌ Falha ao iniciar - tentando modo básico..."
+        npm run start:dev || echo "❌ start:dev falhou, tentando alternativas..."
+        npm run start || echo "❌ start falhou, tentando ts-node..."
+        npx ts-node src/main.ts || echo "❌ Todas as tentativas falharam"
     ports:
       - "3000:3000"
     volumes:
