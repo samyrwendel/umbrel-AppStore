@@ -8,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v5.3.0 - PRODUÇÃO TS-NODE (solução final)..."
+        echo "🚀 P2P TrustScore Bot v5.4.0 - CRIA .ENV AUTOMATICAMENTE..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -26,7 +26,18 @@ services:
         which cross-env || echo "❌ cross-env não encontrado"
         which nest || echo "❌ nest não encontrado" 
         which ts-node || echo "❌ ts-node não encontrado"
-        echo "🌐 PRODUÇÃO COM TS-NODE: Usa ts-node em produção (mais estável)..."
+        echo "📝 Criando arquivo .env com configurações padrão..."
+        cat > .env << 'EOF'
+# Configuração P2P TrustScore Bot - Umbrel
+TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+TELEGRAM_BOT_USERNAME=${TELEGRAM_BOT_USERNAME}
+MONGODB_CNN=${MONGODB_CNN}
+PORT=${PORT}
+NODE_ENV=production
+EOF
+        echo "🔍 Verificando arquivo .env criado..."
+        cat .env
+        echo "🌐 Iniciando bot com configurações do .env..."
         NODE_ENV=production npx ts-node src/main.ts
     ports:
       - "3000:3000"
