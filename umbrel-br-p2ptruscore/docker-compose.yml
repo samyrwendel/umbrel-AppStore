@@ -41,3 +41,8 @@ services:
       - ${APP_DATA_DIR}/data:/data
     environment:
       NODE_ENV: production
+      # Variáveis temporárias para permitir inicialização
+      TELEGRAM_BOT_TOKEN: "CONFIGURE_VIA_WEB"
+      TELEGRAM_BOT_USERNAME: "CONFIGURE_VIA_WEB"
+      MONGODB_CNN: "mongodb://admin:umbrel@mongo:27017/p2ptruscore?authSource=admin"
+      PORT: "3000"
