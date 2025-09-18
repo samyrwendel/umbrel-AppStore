@@ -8,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v5.2.0 - PRODUÇÃO REAL (build forçado)..."
+        echo "🚀 P2P TrustScore Bot v5.3.0 - PRODUÇÃO TS-NODE (solução final)..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -26,23 +26,8 @@ services:
         which cross-env || echo "❌ cross-env não encontrado"
         which nest || echo "❌ nest não encontrado" 
         which ts-node || echo "❌ ts-node não encontrado"
-        echo "🏗️ FORÇANDO build para produção (ignorando erros de tipo)..."
-        nest build --skip-type-check || npx @nestjs/cli build --skip-type-check || npx tsc --skipLibCheck --outDir dist
-        echo "🔍 Verificando se build de produção foi criado..."
-        if [ -f "/app/dist/main.js" ]; then
-          echo "✅ Build de produção criado! Iniciando modo produção..."
-          NODE_ENV=production node dist/main.js
-        else
-          echo "❌ Build falhou mesmo com skip-type-check, tentando compilação manual..."
-          npx tsc --skipLibCheck --noEmitOnError false --outDir dist src/main.ts
-          if [ -f "/app/dist/main.js" ]; then
-            echo "✅ Compilação manual funcionou! Modo produção..."
-            NODE_ENV=production node dist/main.js
-          else
-            echo "❌ Usando ts-node como último recurso..."
-            NODE_ENV=production npx ts-node src/main.ts
-          fi
-        fi
+        echo "🌐 PRODUÇÃO COM TS-NODE: Usa ts-node em produção (mais estável)..."
+        NODE_ENV=production npx ts-node src/main.ts
     ports:
       - "3000:3000"
     volumes:

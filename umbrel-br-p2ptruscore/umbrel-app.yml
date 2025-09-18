@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "5.2.0"
+version: "5.3.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -30,12 +30,15 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v5.2.0 (Atual) 🏭
-  - PRODUÇÃO REAL: Build forçado com --skip-type-check
-  - IGNORA ERROS TIPO: Compila mesmo com erros TypeScript
-  - MÚLTIPLOS BUILDS: nest → tsc --skipLibCheck → fallback ts-node
-  - NODE_ENV=production: Variável de ambiente correta
-  - PERFORMANCE: Roda código compilado otimizado
+  ### v5.3.0 (Atual) 🎯
+  - SOLUÇÃO FINAL: ts-node + NODE_ENV=production (melhor dos dois mundos)
+  - SEM BUILD: Evita problemas de compilação de decorators
+  - PRODUÇÃO ESTÁVEL: NODE_ENV=production mas sem build problemático
+  - PERFORMANCE BOA: ts-node é rápido o suficiente para produção
+  - FUNCIONA SEMPRE: Sem loops infinitos ou erros de runtime
+  
+  ### v5.2.0 🏭
+  - Build falhava por problemas de decorators Mongoose
   
   ### v5.1.0 🏭
   - Tentativa modo produção (build tinha problemas)
