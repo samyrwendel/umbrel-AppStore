@@ -8,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v4.5.0 - DEVDEPENDENCIES CORRETAS..."
+        echo "🚀 P2P TrustScore Bot v5.0.0 - PARA LOOP INFINITO + FORÇA INSTALAÇÃO..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -18,14 +18,23 @@ services:
           cd /app && git pull origin main
         fi
         cd /app
-        echo "📦 Instalando TODAS as dependências (prod + dev)..."
-        npm install --include=dev
-        echo "🔧 Verificando se devDependencies foram instaladas..."
-        npm list cross-env @nestjs/cli @types/node || echo "⚠️ Algumas devDependencies faltando"
-        echo "🌐 Iniciando servidor NestJS em modo desenvolvimento..."
-        npm run start:dev || echo "❌ start:dev falhou, tentando alternativas..."
-        npm run start || echo "❌ start falhou, tentando ts-node..."
-        npx ts-node src/main.ts || echo "❌ Todas as tentativas falharam"
+        echo "📦 FORÇANDO instalação de devDependencies no UmbrelOS..."
+        npm install --include=dev --force
+        echo "🔧 Instalando dependências críticas globalmente..."
+        npm install -g @nestjs/cli cross-env ts-node typescript
+        echo "🔍 Verificando instalações..."
+        which cross-env || echo "❌ cross-env não encontrado"
+        which nest || echo "❌ nest não encontrado" 
+        which ts-node || echo "❌ ts-node não encontrado"
+        echo "🌐 Tentando iniciar com múltiplas estratégias..."
+        echo "Tentativa 1: ts-node direto..."
+        npx ts-node src/main.ts && echo "✅ Sucesso com ts-node!" || echo "❌ ts-node falhou"
+        echo "Tentativa 2: nest start..."
+        nest start && echo "✅ Sucesso com nest!" || echo "❌ nest falhou"
+        echo "Tentativa 3: node direto (após compilar)..."
+        npx tsc && node dist/main.js && echo "✅ Sucesso com tsc!" || echo "❌ tsc falhou"
+        echo "❌ TODAS as tentativas falharam - parando loop infinito"
+        sleep 300
     ports:
       - "3000:3000"
     volumes:

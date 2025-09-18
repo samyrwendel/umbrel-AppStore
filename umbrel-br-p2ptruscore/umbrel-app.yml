@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "4.5.0"
+version: "5.0.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -30,12 +30,15 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v4.5.0 (Atual) 🔧
-  - CORREÇÃO DEVDEPENDENCIES: Instala dependências de desenvolvimento
-  - Flag --include=dev para garantir cross-env e @nestjs/cli
-  - Verificação se devDependencies foram instaladas corretamente
-  - Múltiplos fallbacks: start:dev → start → ts-node
-  - Repositório GitHub confirmado como 100% funcional
+  ### v5.0.0 (Atual) 🛑
+  - PARA LOOP INFINITO: Adiciona sleep 300 para parar restart infinito
+  - FORÇA INSTALAÇÃO: --include=dev --force + instalação global
+  - ESPECÍFICO UMBRELOS: Resolve problemas únicos do ambiente Umbrel
+  - Verificação completa de dependências instaladas
+  - Múltiplas tentativas com diagnóstico detalhado
+  
+  ### v4.5.0 🔧
+  - Tentativa com --include=dev (não funcionou no UmbrelOS)
   
   ### v4.4.0 🌐
   - Tentativa com código real (problema: devDependencies não instaladas)
