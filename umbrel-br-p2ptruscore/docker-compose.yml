@@ -13,7 +13,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v4.0.3 - CORREÇÃO TRAVAMENTO..."
+        echo "🚀 P2P TrustScore Bot v4.1.0 - FORÇA ATUALIZAÇÃO..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
