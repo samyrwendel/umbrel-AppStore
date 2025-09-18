@@ -30,12 +30,12 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v6.0.0 (Atual) 🚀
+  ### v6.0.0 (Atual) 📋
+  - SOLUÇÃO INTELIGENTE: Copia .env.example para .env (ideia do usuário!)
   - FORÇA REINSTALAÇÃO: Versão maior para forçar aparição no Umbrel
   - REMOVE HARDCODED: Remove variáveis fixas do docker-compose
-  - USA SÓ .ENV: Bot lê apenas do arquivo .env (não sobrescreve)
-  - CONFIGURAÇÃO PERSISTENTE: Interface web funciona corretamente
-  - RESOLVE CONFLITO: Variáveis do Docker não conflitam com .env
+  - USA TEMPLATE: .env.example como base (mais confiável)
+  - CONFIGURAÇÃO LIMPA: Interface web edita arquivo real
   
   ### v5.4.0 📝
   - Criava .env mas variáveis Docker sobrescreviam

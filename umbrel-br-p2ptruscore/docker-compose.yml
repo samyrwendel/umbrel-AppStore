@@ -26,19 +26,23 @@ services:
         which cross-env || echo "❌ cross-env não encontrado"
         which nest || echo "❌ nest não encontrado" 
         which ts-node || echo "❌ ts-node não encontrado"
-        echo "📝 Criando arquivo .env com configurações padrão..."
-        cat > .env << 'EOF'
-# Configuração P2P TrustScore Bot - Umbrel
-# IMPORTANTE: Configure via interface web
+        echo "📝 Criando arquivo .env a partir do .env.example..."
+        if [ -f ".env.example" ]; then
+          cp .env.example .env
+          echo "✅ .env criado a partir do .env.example"
+        else
+          echo "❌ .env.example não encontrado, criando .env básico..."
+          cat > .env << 'EOF'
 TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB
 TELEGRAM_BOT_USERNAME=CONFIGURE_VIA_WEB
 MONGODB_CNN=mongodb://admin:umbrel@mongo:27017/p2ptruscore?authSource=admin
 PORT=3000
 NODE_ENV=production
 EOF
+        fi
         echo "🔍 Verificando arquivo .env criado..."
         cat .env
-        echo "🌐 Iniciando bot com configurações do .env..."
+        echo "🌐 Iniciando bot (configure via interface web)..."
         NODE_ENV=production npx ts-node src/main.ts
     ports:
       - "3000:3000"
