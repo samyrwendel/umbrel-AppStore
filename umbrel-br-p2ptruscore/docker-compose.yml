@@ -1,16 +1,19 @@
 version: '3'
 
 services:
+  app_proxy:
+    environment:
+      APP_HOST: app
+      APP_PORT: 3000
+
   app:
     image: node:20-alpine
     restart: unless-stopped
-    ports:
-      - "3000"
     command: 
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v3.1.2 - CORREÇÃO FINAL..."
+        echo "🚀 P2P TrustScore Bot v3.2.0 - PADRÃO UMBREL..."
         echo "📊 Variáveis de ambiente:"
         echo "   APP_HOST_PORT: ${APP_HOST_PORT}"
         echo "   NODE_ENV: ${NODE_ENV}"
