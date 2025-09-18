@@ -8,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v5.0.0 - PARA LOOP INFINITO + FORÇA INSTALAÇÃO..."
+        echo "🚀 P2P TrustScore Bot v5.1.0 - MODO PRODUÇÃO AUTOMÁTICO..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -26,15 +26,16 @@ services:
         which cross-env || echo "❌ cross-env não encontrado"
         which nest || echo "❌ nest não encontrado" 
         which ts-node || echo "❌ ts-node não encontrado"
-        echo "🌐 Tentando iniciar com múltiplas estratégias..."
-        echo "Tentativa 1: ts-node direto..."
-        npx ts-node src/main.ts && echo "✅ Sucesso com ts-node!" || echo "❌ ts-node falhou"
-        echo "Tentativa 2: nest start..."
-        nest start && echo "✅ Sucesso com nest!" || echo "❌ nest falhou"
-        echo "Tentativa 3: node direto (após compilar)..."
-        npx tsc && node dist/main.js && echo "✅ Sucesso com tsc!" || echo "❌ tsc falhou"
-        echo "❌ TODAS as tentativas falharam - parando loop infinito"
-        sleep 300
+        echo "🏗️ Compilando para produção..."
+        nest build || npx @nestjs/cli build || npx tsc
+        echo "🔍 Verificando se compilação foi bem-sucedida..."
+        if [ -f "/app/dist/main.js" ]; then
+          echo "✅ Compilação bem-sucedida! Iniciando em modo produção..."
+          node dist/main.js
+        else
+          echo "❌ Compilação falhou, iniciando em modo desenvolvimento..."
+          npx ts-node src/main.ts
+        fi
     ports:
       - "3000:3000"
     volumes:

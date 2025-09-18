@@ -4,20 +4,20 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "5.0.1"
+version: "5.1.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
   
   ✅ Interface web funcionando! Clique em "Abrir" para acessar.
   
-  🌐 INTERFACE WEB REAL: Usa a interface de configuração do repositório Git!
+  🌐 MODO PRODUÇÃO: Compila automaticamente e roda otimizado!
   
   📋 COMO USAR:
   1. Clique "Abrir" para acessar a interface
-  2. Vá para /api/config para configurar TOKEN e USERNAME
-  3. Interface web completa com edição de .env
-  4. Configuração visual sem necessidade de SSH
+  2. Configure TOKEN via /api/config (sem terminal necessário)
+  3. Bot roda em produção automaticamente após configuração
+  4. Pronto para grupos do Telegram em produção
 
 developer: Samyr Wendel
 website: https://github.com/samyrwendel/p2ptruscore
@@ -30,12 +30,15 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v5.0.1 (Atual) ✅
-  - CONFIGURAÇÃO PADRÃO: Adiciona variáveis temporárias para inicialização
-  - PERMITE BOOT: Bot inicia mesmo sem configuração (mostra interface)
-  - MONGODB_CNN configurado para Umbrel
-  - Interface /api/config acessível para configuração real
-  - SUCESSO: NestJS iniciando corretamente!
+  ### v5.1.0 (Atual) 🏭
+  - MODO PRODUÇÃO: Compila automaticamente com nest build
+  - SEM TERMINAL: Funciona 100% via interface web
+  - OTIMIZADO: Roda node dist/main.js (compilado)
+  - FALLBACK: ts-node se compilação falhar
+  - PRODUÇÃO READY: Pronto para uso em grupos reais
+  
+  ### v5.0.1 ✅
+  - Configuração padrão funcionando
   
   ### v5.0.0 🛑
   - Para loop infinito + força instalação (funcionou!)
