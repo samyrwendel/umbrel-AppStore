@@ -13,7 +13,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v4.0.2 - CORREÇÃO TIPOS..."
+        echo "🚀 P2P TrustScore Bot v4.0.3 - CORREÇÃO TRAVAMENTO..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -23,23 +23,10 @@ services:
           cd /app && git pull origin main
         fi
         cd /app
-        echo "📦 Instalando dependências de produção..."
-        npm install --only=production
-        echo "📦 Instalando dependências de desenvolvimento..."
-        npm install --only=development
-        echo "🔧 Instalando tipos Node.js..."
-        npm install @types/node --save-dev
-        echo "🔧 Instalando cross-env..."
-        npm install cross-env --save-dev
-        echo "🔧 Instalando NestJS CLI globalmente..."
-        npm install -g @nestjs/cli
-        echo "🏗️ Compilando projeto (ignorando erros de tipo)..."
-        if command -v nest >/dev/null 2>&1; then
-          nest build --skip-type-check || echo "⚠️ Build com avisos, mas continuando..."
-        else
-          echo "⚠️ Usando npx como fallback..."
-          npx @nestjs/cli build --skip-type-check || echo "⚠️ Build com avisos, mas continuando..."
-        fi
+        echo "📦 Instalando todas as dependências..."
+        npm install
+        echo "🏗️ Tentando compilar com npx (sem instalação global)..."
+        timeout 60 npx @nestjs/cli build || echo "⚠️ Build demorou muito ou falhou..."
         echo "🔍 Verificando se build foi criado..."
         if [ -f "/app/dist/main.js" ]; then
           echo "✅ Build criado com sucesso!"
@@ -47,21 +34,22 @@ services:
           echo "✅ Acesse /api/config para configurar o bot"
           npm run start:prod
         else
-          echo "❌ Build falhou, tentando compilar com tsc diretamente..."
-          npx tsc --skipLibCheck --outDir dist src/main.ts || echo "⚠️ Compilação com avisos..."
-          if [ -f "/app/dist/main.js" ]; then
-            echo "✅ Compilação manual funcionou!"
-            node dist/main.js
-          else
-            echo "❌ Todas as tentativas falharam, iniciando servidor simples..."
-            node -e "
-            const express = require('express');
-            const app = express();
-            app.get('/', (req, res) => res.send('Bot em manutenção - Problemas de compilação'));
-            app.get('/api/config', (req, res) => res.send('Interface de configuração temporariamente indisponível'));
-            app.listen(3000, () => console.log('Servidor temporário rodando na porta 3000'));
-            " || echo "❌ Falha total"
-          fi
+          echo "❌ Build falhou, iniciando servidor HTTP simples..."
+          node -e "
+          const http = require('http');
+          const server = http.createServer((req, res) => {
+            res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
+            if (req.url === '/api/config') {
+              res.end('<html><head><title>Configuração Bot</title></head><body><h1>🤖 P2P TrustScore Bot</h1><p>⚠️ Interface de configuração temporariamente indisponível</p><p>O bot está em modo de manutenção devido a problemas de compilação.</p></body></html>');
+            } else {
+              res.end('<html><head><title>P2P TrustScore Bot</title></head><body><h1>🤖 P2P TrustScore Bot</h1><p>✅ Servidor funcionando!</p><p>⚠️ Bot em modo de manutenção</p><p><a href=\"/api/config\">Ir para configuração</a></p></body></html>');
+            }
+          });
+          server.listen(3000, () => {
+            console.log('✅ Servidor HTTP simples rodando na porta 3000');
+            console.log('🌐 Acesse via botão Abrir no Umbrel');
+          });
+          "
         fi
     volumes:
       - ${APP_DATA_DIR}/data:/data
