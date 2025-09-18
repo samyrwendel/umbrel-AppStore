@@ -13,7 +13,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v4.0.0 - CÓDIGO REAL com interface web..."
+        echo "🚀 P2P TrustScore Bot v4.0.1 - CORREÇÃO BUILD..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -25,11 +25,25 @@ services:
         cd /app
         echo "📦 Instalando dependências..."
         npm install
-        echo "🏗️ Compilando projeto..."
-        npm run build
-        echo "🌐 Iniciando servidor com interface de configuração..."
-        echo "✅ Acesse /api/config para configurar o bot"
-        npm run start:prod
+        echo "🔧 Instalando NestJS CLI globalmente..."
+        npm install -g @nestjs/cli
+        echo "🏗️ Compilando projeto com NestJS CLI..."
+        if command -v nest >/dev/null 2>&1; then
+          nest build
+        else
+          echo "⚠️ Usando npx como fallback..."
+          npx @nestjs/cli build
+        fi
+        echo "🔍 Verificando se build foi criado..."
+        if [ -f "/app/dist/main.js" ]; then
+          echo "✅ Build criado com sucesso!"
+          echo "🌐 Iniciando servidor com interface de configuração..."
+          echo "✅ Acesse /api/config para configurar o bot"
+          npm run start:prod
+        else
+          echo "❌ Build falhou, iniciando em modo desenvolvimento..."
+          npm run start:dev
+        fi
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
