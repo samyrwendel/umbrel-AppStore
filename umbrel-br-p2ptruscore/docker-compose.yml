@@ -8,7 +8,7 @@ services:
       - sh
       - -c
       - |
-        echo "🚀 P2P TrustScore Bot v4.3.0 - PULA BUILD (servidor direto)..."
+        echo "🚀 P2P TrustScore Bot v4.4.0 - CÓDIGO REAL (interface web do Git)..."
         apk add --no-cache git
         if [ ! -d /app/.git ]; then
           echo "📥 Clonando repositório..."
@@ -18,24 +18,10 @@ services:
           cd /app && git pull origin main
         fi
         cd /app
-        echo "📦 Instalando apenas dependências essenciais..."
-        npm install express --save
-        echo "🚀 Pulando build - iniciando servidor HTTP direto..."
-        node -e "
-          const http = require('http');
-          const server = http.createServer((req, res) => {
-            res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8'});
-            if (req.url === '/api/config') {
-              res.end('<html><head><title>Configuração Bot</title></head><body><h1>🤖 P2P TrustScore Bot</h1><p>⚠️ Interface de configuração temporariamente indisponível</p><p>O bot está em modo de manutenção devido a problemas de compilação.</p></body></html>');
-            } else {
-              res.end('<html><head><title>P2P TrustScore Bot</title></head><body><h1>🤖 P2P TrustScore Bot</h1><p>✅ Servidor funcionando!</p><p>⚠️ Bot em modo de manutenção</p><p><a href=\"/api/config\">Ir para configuração</a></p></body></html>');
-            }
-          });
-          server.listen(3000, () => {
-            console.log('✅ Servidor HTTP simples rodando na porta 3000');
-            console.log('🌐 Acesse via botão Abrir no Umbrel');
-          });
-          "
+        echo "📦 Instalando dependências para rodar o código real..."
+        npm install
+        echo "🌐 Iniciando servidor NestJS em modo desenvolvimento..."
+        npm run start:dev || npm run start || node src/main.js || echo "❌ Falha ao iniciar - tentando modo básico..."
     ports:
       - "3000:3000"
     volumes:
