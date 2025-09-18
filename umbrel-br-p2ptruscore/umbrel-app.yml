@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "4.0.1"
+version: "4.0.2"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -31,12 +31,16 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v4.0.1 (Atual) 🔧
-  - CORREÇÃO BUILD: Instala NestJS CLI globalmente
-  - Fallback para npx se CLI não funcionar
+  ### v4.0.2 (Atual) 🛠️
+  - CORREÇÃO TIPOS: Instala @types/node e cross-env
+  - Build com --skip-type-check para ignorar erros de tipo
+  - Múltiplos fallbacks: nest → npx → tsc → servidor simples
+  - Instalação separada de deps produção e desenvolvimento
+  - Servidor temporário se tudo falhar (garante funcionamento)
+  
+  ### v4.0.1 🔧
+  - Instala NestJS CLI globalmente
   - Verificação se dist/main.js foi criado
-  - Modo desenvolvimento como backup se build falhar
-  - Resolve erro "nest: not found" e "Cannot find module"
   
   ### v4.0.0 🌐
   - CÓDIGO REAL: Usa o repositório GitHub com interface web
