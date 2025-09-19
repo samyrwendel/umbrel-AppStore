@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "11.1.0"
+version: "11.2.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -30,7 +30,13 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v11.1.0 (Atual) 🎯
+  ### v11.2.0 (Atual) 🛠️
+  - CORRIGE SINTAXE YAML: Remove heredoc problemático (cat << EOF)
+  - USA ECHO SEQUENCIAL: Mais compatível com YAML linter
+  - YAML VÁLIDO: Sem erros de sintaxe no docker-compose.yml
+  - MESMO RESULTADO: .env criado corretamente
+  
+  ### v11.1.0 🎯
   - CORRIGE CONFLITO ENVIRONMENT: Remove NODE_ENV do docker-compose.yml
   - PROBLEMA IDENTIFICADO: Docker sobrescrevia variáveis do .env
   - AGORA .ENV FUNCIONA: Sem conflitos de environment variables

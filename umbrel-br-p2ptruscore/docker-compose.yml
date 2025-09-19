@@ -13,16 +13,14 @@ services:
         fi &&
         npm install &&
         echo 'CRIANDO .env com valores funcionais...' &&
-        cat > .env << 'EOF'
-TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB_INTERFACE
-TELEGRAM_BOT_USERNAME=CONFIGURE_VIA_WEB_INTERFACE  
-MONGODB_CNN=mongodb://localhost:27017/p2ptruscore
-PORT=3000
-NODE_ENV=production
-JWT_SECRET=umbrel-p2p-secret-key-2025
-WEBHOOK_URL=http://localhost:3000/webhook
-API_URL=http://localhost:3000/api
-EOF
+        echo 'TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB_INTERFACE' > .env &&
+        echo 'TELEGRAM_BOT_USERNAME=CONFIGURE_VIA_WEB_INTERFACE' >> .env &&
+        echo 'MONGODB_CNN=mongodb://localhost:27017/p2ptruscore' >> .env &&
+        echo 'PORT=3000' >> .env &&
+        echo 'NODE_ENV=production' >> .env &&
+        echo 'JWT_SECRET=umbrel-p2p-secret-key-2025' >> .env &&
+        echo 'WEBHOOK_URL=http://localhost:3000/webhook' >> .env &&
+        echo 'API_URL=http://localhost:3000/api' >> .env &&
         echo '.env criado:' && cat .env &&
         npx ts-node --transpile-only src/main.ts
       "
