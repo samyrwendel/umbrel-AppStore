@@ -12,16 +12,18 @@ services:
           git clone https://github.com/samyrwendel/p2ptruscore.git .
         fi &&
         npm install &&
-        echo 'CRIANDO .env com valores funcionais...' &&
-        echo 'TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB_INTERFACE' > .env &&
-        echo 'TELEGRAM_BOT_USERNAME=CONFIGURE_VIA_WEB_INTERFACE' >> .env &&
-        echo 'MONGODB_CNN=mongodb://localhost:27017/p2ptruscore' >> .env &&
-        echo 'PORT=3000' >> .env &&
-        echo 'NODE_ENV=production' >> .env &&
-        echo 'JWT_SECRET=umbrel-p2p-secret-key-2025' >> .env &&
-        echo 'WEBHOOK_URL=http://localhost:3000/webhook' >> .env &&
-        echo 'API_URL=http://localhost:3000/api' >> .env &&
-        echo '.env criado:' && cat .env &&
+        echo 'CRIANDO .env em /data/ (local correto)...' &&
+        echo 'TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB_INTERFACE' > /data/.env &&
+        echo 'TELEGRAM_BOT_USERNAME=CONFIGURE_VIA_WEB_INTERFACE' >> /data/.env &&
+        echo 'MONGODB_CNN=mongodb://localhost:27017/p2ptruscore' >> /data/.env &&
+        echo 'PORT=3000' >> /data/.env &&
+        echo 'NODE_ENV=production' >> /data/.env &&
+        echo 'JWT_SECRET=umbrel-p2p-secret-key-2025' >> /data/.env &&
+        echo 'WEBHOOK_URL=http://localhost:3000/webhook' >> /data/.env &&
+        echo 'API_URL=http://localhost:3000/api' >> /data/.env &&
+        echo '.env criado:' && cat /data/.env &&
+        echo 'Copiando .env para /app para compatibilidade...' &&
+        cp /data/.env /app/.env &&
         npx ts-node --transpile-only src/main.ts
       "
     ports:
