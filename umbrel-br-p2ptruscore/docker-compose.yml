@@ -12,15 +12,32 @@ services:
           git clone https://github.com/samyrwendel/p2ptruscore.git .
         fi &&
         npm install &&
-        echo 'CRIANDO .env em /data/ (local correto)...' &&
-        echo 'TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB_INTERFACE' > /data/.env &&
-        echo 'TELEGRAM_BOT_USERNAME=CONFIGURE_VIA_WEB_INTERFACE' >> /data/.env &&
-        echo 'MONGODB_CNN=mongodb://localhost:27017/p2ptruscore' >> /data/.env &&
-        echo 'PORT=3000' >> /data/.env &&
-        echo 'NODE_ENV=production' >> /data/.env &&
-        echo 'JWT_SECRET=umbrel-p2p-secret-key-2025' >> /data/.env &&
-        echo 'WEBHOOK_URL=http://localhost:3000/webhook' >> /data/.env &&
-        echo 'API_URL=http://localhost:3000/api' >> /data/.env &&
+        echo 'VERIFICANDO se .env já existe...' &&
+        if [ ! -f /data/.env ]; then
+          echo 'CRIANDO .env padrão (será substituído pela interface web)...' &&
+          echo '# Configuração do TrustScore Bot' > /data/.env &&
+          echo '# Configure via interface web ou edite este arquivo' >> /data/.env &&
+          echo '' >> /data/.env &&
+          echo '# Token do bot Telegram (obtenha em @BotFather)' >> /data/.env &&
+          echo 'TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB_INTERFACE' >> /data/.env &&
+          echo '' >> /data/.env &&
+          echo '# Username do bot (sem @)' >> /data/.env &&
+          echo 'TELEGRAM_BOT_USERNAME=CONFIGURE_VIA_WEB_INTERFACE' >> /data/.env &&
+          echo '' >> /data/.env &&
+          echo '# IDs dos grupos Telegram (separados por vírgula)' >> /data/.env &&
+          echo 'TELEGRAM_GROUPS=' >> /data/.env &&
+          echo '' >> /data/.env &&
+          echo '# MongoDB Connection String' >> /data/.env &&
+          echo 'MONGODB_CNN=mongodb://localhost:27017/p2ptruscore' >> /data/.env &&
+          echo '' >> /data/.env &&
+          echo '# Porta da aplicação' >> /data/.env &&
+          echo 'PORT=3000' >> /data/.env &&
+          echo '' >> /data/.env &&
+          echo '# Ambiente de execução' >> /data/.env &&
+          echo 'NODE_ENV=production' >> /data/.env
+        else
+          echo '.env já existe, mantendo configuração atual...'
+        fi &&
         echo '.env criado:' && cat /data/.env &&
         echo 'Copiando .env para /app para compatibilidade...' &&
         cp /data/.env /app/.env &&
