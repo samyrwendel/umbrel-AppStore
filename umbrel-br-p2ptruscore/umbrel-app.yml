@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "11.0.0"
+version: "11.1.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -30,13 +30,18 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v11.0.0 (Atual) 🚀
+  ### v11.1.0 (Atual) 🎯
+  - CORRIGE CONFLITO ENVIRONMENT: Remove NODE_ENV do docker-compose.yml
+  - PROBLEMA IDENTIFICADO: Docker sobrescrevia variáveis do .env
+  - AGORA .ENV FUNCIONA: Sem conflitos de environment variables
+  - SOLUÇÃO DEFINITIVA: Apenas .env controla as variáveis
+  
+  ### v11.0.0 🚀  
   - FORÇA ATUALIZAÇÃO: Versão maior para forçar detecção pelo Umbrel
   - CORRIGE .ENV VAZIO: Força criação com valores funcionais  
   - REMOVE DEPENDÊNCIA .env.example: Cria .env direto no script
   - VALORES PADRÃO: TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB_INTERFACE
   - DEBUG MELHORADO: Mostra conteúdo do .env criado
-  - SOLUÇÃO DEFINITIVA: Não depende mais de arquivos externos
   
   ### v10.3.0 📝
   - Versão anterior (mesmo conteúdo, problema de detecção Umbrel)
