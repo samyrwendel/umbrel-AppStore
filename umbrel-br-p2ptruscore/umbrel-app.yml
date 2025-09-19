@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "10.0.0"
+version: "10.1.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -30,12 +30,15 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v10.0.0 (Atual) 🚀
-  - VERSÃO MEGA: v10.0.0 para FORÇAR aparição no Umbrel
-  - SOLUÇÃO INTELIGENTE: Copia .env.example para .env (ideia do usuário!)
-  - REMOVE HARDCODED: Remove variáveis fixas do docker-compose
-  - USA TEMPLATE: .env.example como base (mais confiável)
-  - CONFIGURAÇÃO LIMPA: Interface web edita arquivo real
+  ### v10.1.0 (Atual) ⚡
+  - SCRIPT SIMPLIFICADO: Remove complexidade que impedia instalação
+  - COMANDO CURTO: 5 linhas simples (igual MongoDB que funciona)
+  - SEM INSTALAÇÕES GLOBAIS: Evita travamentos
+  - WORKING_DIR: /app (mais limpo)
+  - COPIA .ENV.EXAMPLE: Solução do usuário implementada
+  
+  ### v10.0.0 🚀
+  - Script muito complexo (impedia instalação)
   
   ### v5.4.0 📝
   - Criava .env mas variáveis Docker sobrescreviam

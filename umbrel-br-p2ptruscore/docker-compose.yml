@@ -4,50 +4,18 @@ services:
   app:
     image: node:20-alpine
     restart: unless-stopped
-    command: 
-      - sh
-      - -c
-      - |
-        echo "🚀 P2P TrustScore Bot v10.0.0 - VERSÃO MEGA PARA FORÇAR..."
-        apk add --no-cache git
-        if [ ! -d /app/.git ]; then
-          echo "📥 Clonando repositório..."
-          git clone https://github.com/samyrwendel/p2ptruscore.git /app
-        else
-          echo "🔄 Atualizando código..."
-          cd /app && git pull origin main
-        fi
-        cd /app
-        echo "📦 FORÇANDO instalação de devDependencies no UmbrelOS..."
-        npm install --include=dev --force
-        echo "🔧 Instalando dependências críticas globalmente..."
-        npm install -g @nestjs/cli cross-env ts-node typescript
-        echo "🔍 Verificando instalações..."
-        which cross-env || echo "❌ cross-env não encontrado"
-        which nest || echo "❌ nest não encontrado" 
-        which ts-node || echo "❌ ts-node não encontrado"
-        echo "📝 Criando arquivo .env a partir do .env.example..."
-        if [ -f ".env.example" ]; then
-          cp .env.example .env
-          echo "✅ .env criado a partir do .env.example"
-        else
-          echo "❌ .env.example não encontrado, criando .env básico..."
-          cat > .env << 'EOF'
-TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB
-TELEGRAM_BOT_USERNAME=CONFIGURE_VIA_WEB
-MONGODB_CNN=mongodb://admin:umbrel@mongo:27017/p2ptruscore?authSource=admin
-PORT=3000
-NODE_ENV=production
-EOF
-        fi
-        echo "🔍 Verificando arquivo .env criado..."
-        cat .env
-        echo "🌐 Iniciando bot (configure via interface web)..."
-        NODE_ENV=production npx ts-node src/main.ts
+    working_dir: /app
+    command: >
+      sh -c "
+        apk add --no-cache git &&
+        git clone https://github.com/samyrwendel/p2ptruscore.git . &&
+        npm install &&
+        cp .env.example .env &&
+        npx ts-node src/main.ts
+      "
     ports:
       - "3000:3000"
     volumes:
       - ${APP_DATA_DIR}/data:/data
     environment:
       NODE_ENV: production
-      # Sem variáveis hardcoded - usa apenas arquivo .env
