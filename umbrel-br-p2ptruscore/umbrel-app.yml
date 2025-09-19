@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "10.2.0"
+version: "10.3.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -30,11 +30,15 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v10.2.0 (Atual) 🛠️
-  - CORRIGE TYPESCRIPT: --transpile-only (ignora erros de tipo)
-  - EVITA LOOP INFINITO: Verifica se .git existe antes de clonar
-  - SCRIPT ROBUSTO: Não trava mais em erros TypeScript
-  - INSTALAÇÃO LIMPA: Sem reinicializações infinitas
+  ### v10.3.0 (Atual) 📝
+  - CORRIGE .ENV VAZIO: Força criação com valores funcionais
+  - REMOVE DEPENDÊNCIA .env.example: Cria .env direto no script
+  - VALORES PADRÃO: TELEGRAM_BOT_TOKEN=CONFIGURE_VIA_WEB_INTERFACE
+  - DEBUG MELHORADO: Mostra conteúdo do .env criado
+  - SOLUÇÃO DEFINITIVA: Não depende mais de arquivos externos
+  
+  ### v10.2.0 🛠️
+  - .env estava vazio (problema identificado nos logs)
   
   ### v10.1.0 ⚡
   - Erro TypeScript impedia execução (ts-node falhava)
