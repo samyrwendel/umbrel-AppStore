@@ -4,7 +4,7 @@ name: P2P TrustScore Bot
 tagline: Bot de karma/reputação para grupos do Telegram
 icon: https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg
 category: Social
-version: "11.4.0"
+version: "11.5.0"
 port: 3000
 description: >-
   Bot de karma/reputação para grupos do Telegram.
@@ -30,7 +30,13 @@ gallery:
 releaseNotes: >-
   ## O que há de novo:
   
-  ### v11.4.0 (Atual) 🔧
+  ### v11.5.0 (Atual) 🔄
+  - GIT PULL AUTOMÁTICO: Sempre baixa versão mais recente do código
+  - ATUALIZAÇÕES SIMPLES: Reiniciar app = código atualizado
+  - DESENVOLVIMENTO ÁGIL: Push no GitHub → Reiniciar → Pronto!
+  - SEM REINSTALAÇÃO: Código atualiza sem perder configurações
+  
+  ### v11.4.0 🔧
   - PRESERVA .ENV EXISTENTE: Não sobrescreve se já existe
   - SUPORTE A TELEGRAM_GROUPS: Adiciona campo para grupos
   - TEMPLATE MELHORADO: Comentários e estrutura organizada

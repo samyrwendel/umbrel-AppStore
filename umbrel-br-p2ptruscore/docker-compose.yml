@@ -9,7 +9,11 @@ services:
       sh -c "
         apk add --no-cache git &&
         if [ ! -d .git ]; then
+          echo '📥 Clonando repositório (primeira instalação)...'
           git clone https://github.com/samyrwendel/p2ptruscore.git .
+        else
+          echo '🔄 Atualizando código do GitHub...'
+          git pull origin main
         fi &&
         npm install &&
         echo 'VERIFICANDO se .env já existe...' &&
