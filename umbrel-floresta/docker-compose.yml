@@ -1,0 +1,33 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: floresta
+      APP_PORT: 50001
+
+  floresta:
+    image: dlsz/floresta:latest
+    restart: on-failure
+    stop_grace_period: 1m
+    ports:
+      - "50001:50001"  # Electrum server
+      - "8332:8332"    # RPC interface
+    volumes:
+      - ${APP_DATA_DIR}/floresta:/data/.floresta
+      - ${APP_DATA_DIR}/config:/data/config
+    environment:
+      - RUST_LOG=info
+    command: >
+      florestad 
+      --data-dir /data/.floresta 
+      --electrum-address 0.0.0.0:50001
+      --rpc-address 0.0.0.0:8332
+      --network mainnet
+      --assume-utreexo
+    healthcheck:
+      test: ["CMD", "floresta-cli", "getblockchaininfo"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s

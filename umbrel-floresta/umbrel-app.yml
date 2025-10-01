@@ -1,0 +1,49 @@
+manifestVersion: 1
+id: umbrel-floresta
+name: Floresta
+tagline: Lightweight Bitcoin full node powered by Utreexo
+icon: https://raw.githubusercontent.com/vinteumorg/Floresta/master/doc/assets/floresta-logo.png
+category: Bitcoin
+version: "0.6.1"
+port: 50001
+description: >-
+  Floresta é uma implementação leve de full node Bitcoin escrita em Rust e alimentada por Utreexo, 
+  um acumulador dinâmico projetado para o conjunto UTXO do Bitcoin.
+  
+  ✅ Full node Bitcoin completo com validação
+  ✅ Servidor Electrum integrado
+  ✅ Carteira watch-only
+  ✅ Interface RPC compatível com Bitcoin Core
+  ✅ Tecnologia Utreexo para eficiência de armazenamento
+  
+  O Floresta oferece uma alternativa eficiente ao Bitcoin Core, utilizando menos recursos 
+  de armazenamento através da tecnologia Utreexo, mantendo a segurança e validação completa.
+  
+  Portas expostas:
+  - 50001: Servidor Electrum
+  - 8332: Interface RPC
+  - 3333: Métricas Prometheus (opcional)
+
+developer: vinteumorg
+website: https://github.com/vinteumorg/Floresta
+dependencies: []
+repo: https://github.com/vinteumorg/Floresta
+support: https://github.com/vinteumorg/Floresta/issues
+gallery:
+  - https://raw.githubusercontent.com/vinteumorg/Floresta/master/doc/assets/floresta-screenshot.png
+releaseNotes: >-
+  ## O que há de novo:
+  
+  ### v0.6.1 (Atual)
+  - Implementação completa do full node Bitcoin
+  - Servidor Electrum integrado
+  - Suporte a carteira watch-only
+  - Interface RPC compatível
+  - Tecnologia Utreexo para otimização de armazenamento
+  
+  ### Recursos principais:
+  - Validação completa de transações usando rust-bitcoinconsensus
+  - Sincronização eficiente com a rede Bitcoin
+  - Suporte a múltiplas redes (mainnet, testnet, signet, regtest)
+  - Métricas Prometheus opcionais
+  - Interface de linha de comando (floresta-cli)
