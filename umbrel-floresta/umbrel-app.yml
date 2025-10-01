@@ -22,15 +22,16 @@ description: >-
   Portas expostas:
   - 50001: Servidor Electrum
   - 8332: Interface RPC
-  - 3333: Métricas Prometheus (opcional)
 
 developer: vinteumorg
 website: https://github.com/vinteumorg/Floresta
+submitter: vinteumorg
+submission: https://github.com/vinteumorg/Floresta
 dependencies: []
 repo: https://github.com/vinteumorg/Floresta
 support: https://github.com/vinteumorg/Floresta/issues
 gallery:
-  - https://raw.githubusercontent.com/vinteumorg/Floresta/master/doc/assets/floresta-screenshot.png
+  - https://avatars.githubusercontent.com/u/175327566
 releaseNotes: >-
   ## O que há de novo:
   
