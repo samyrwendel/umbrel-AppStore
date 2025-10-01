@@ -2,7 +2,7 @@ manifestVersion: 1
 id: umbrel-floresta
 name: Floresta
 tagline: Lightweight Bitcoin full node powered by Utreexo
-icon: https://raw.githubusercontent.com/vinteumorg/Floresta/master/doc/assets/floresta-logo.png
+icon: https://avatars.githubusercontent.com/u/175327566
 category: Bitcoin
 version: "0.6.1"
 port: 50001
