@@ -12,7 +12,7 @@ services:
       - ${APP_DATA_DIR}/floresta:/data/.floresta
     environment:
       - RUST_LOG=info
-    command: ["florestad", "--data-dir", "/data/.floresta", "--electrum-address", "0.0.0.0:50001", "--rpc-address", "0.0.0.0:8332", "--network", "mainnet", "--assume-utreexo"]
+    command: ["florestad", "--data-dir", "/data/.floresta", "--electrum-address", "0.0.0.0:50001", "--rpc-address", "0.0.0.0:8332", "--network", "mainnet"]
     healthcheck:
       test: ["CMD", "floresta-cli", "getblockchaininfo"]
       interval: 30s
