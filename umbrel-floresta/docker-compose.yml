@@ -3,6 +3,7 @@ version: "3.7"
 services:
   floresta:
     image: dlsz/floresta:latest
+    pull_policy: always
     restart: on-failure
     stop_grace_period: 1m
     ports:
