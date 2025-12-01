@@ -40,4 +40,4 @@ releaseNotes: >-
     - QR Code authentication
     - TypeBot, Chatwoot, N8N integrations
 dependencies: []
-path: ""
+path: "/manager"
