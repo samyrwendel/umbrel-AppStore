@@ -1,0 +1,43 @@
+manifestVersion: 1
+id: umbrel-br-evolution-api
+name: Evolution API
+tagline: WhatsApp API for automation and chatbots
+icon: https://raw.githubusercontent.com/EvolutionAPI/evolution-api/main/public/images/evolution-logo.png
+category: automation
+version: "2.1.1"
+port: 8080
+description: >-
+  Evolution API is a powerful WhatsApp API that allows you to send and receive messages,
+  manage groups, send media files, and integrate with automation tools.
+
+  Perfect for building chatbots, customer service automation, and WhatsApp-based applications.
+
+  Features:
+    - Multi-device support
+    - Webhook notifications
+    - RESTful API
+    - TypeBot, Chatwoot, N8N integrations
+    - Group management
+    - Media support (images, audio, video, documents)
+    - QR Code authentication
+    - Session management
+developer: Evolution API
+website: https://doc.evolution-api.com
+submitter: Samyr Wendel
+submission: https://github.com/samyrwendel/umbrel-AppStore
+repo: https://github.com/EvolutionAPI/evolution-api
+support: https://doc.evolution-api.com
+gallery:
+  - https://raw.githubusercontent.com/EvolutionAPI/evolution-api/main/public/images/cover.png
+releaseNotes: >-
+  Evolution API v2.1.1 - WhatsApp API for Business
+  
+  Key features:
+    - Multi-device WhatsApp connection
+    - Webhook support for message events
+    - Group management
+    - Media sending
+    - QR Code authentication
+    - TypeBot, Chatwoot, N8N integrations
+dependencies: []
+path: ""
