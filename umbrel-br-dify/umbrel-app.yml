@@ -1,0 +1,50 @@
+manifestVersion: 1
+id: umbrel-br-dify
+name: Dify
+tagline: Open-source LLM app development platform
+icon: https://raw.githubusercontent.com/langgenius/dify/main/web/public/logo/logo-site.png
+category: ai
+version: "1.10.1"
+port: 8090
+description: >-
+  Dify is an open-source LLM app development platform that combines AI workflow,
+  RAG pipeline, Agent capabilities, model management, and observability features.
+
+  Build production-ready AI applications in minutes, not weeks.
+
+  Features:
+    - Visual AI Workflow Builder
+    - RAG Pipeline for knowledge bases
+    - Agent Framework with tool calling
+    - LLM Model Management (OpenAI, Claude, Gemini, etc.)
+    - Prompt IDE for testing and optimization
+    - Enterprise features with SSO/Access Control
+    - Local deployment with full data control
+    - API-first design for easy integration
+    - Plugin system for extensibility
+
+  Perfect for building chatbots, AI assistants, document Q&A,
+  workflow automation, and custom AI applications.
+
+developer: LangGenius
+website: https://dify.ai
+submitter: Samyr Wendel
+submission: https://github.com/samyrwendel/umbrel-AppStore
+repo: https://github.com/langgenius/dify
+support: https://github.com/langgenius/dify/issues
+gallery:
+  - https://raw.githubusercontent.com/langgenius/dify/main/web/public/images/upload-knowledge.png
+releaseNotes: >-
+  Dify v1.10.1 - Open-source LLM Application Platform
+
+  Key features:
+    - Visual AI Workflow Builder
+    - RAG Pipeline with vector databases
+    - Multi-model support (OpenAI, Anthropic, Google, etc.)
+    - Agent capabilities with tool calling
+    - Knowledge base management
+    - API-first architecture
+    - Plugin ecosystem
+dependencies: []
+path: ""
+deterministicPassword: true
