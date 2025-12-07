@@ -1,0 +1,13 @@
+{
+  "name": "umbrel-cleanup-manager",
+  "version": "1.0.0",
+  "description": "Lista e limpa instalações mal sucedidas do Umbrel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "dockerode": "^4.0.2"
+  }
+}

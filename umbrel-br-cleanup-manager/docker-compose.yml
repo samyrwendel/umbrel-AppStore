@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: umbrel-br-cleanup-manager_web_1
+      APP_PORT: 3000
+
+  web:
+    image: ghcr.io/umbrel-br/cleanup-manager:v1.0.0
+    build: .
+    restart: on-failure
+    stop_grace_period: 1m
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/umbrel/umbrel/app-data:/umbrel-data:ro
+      - /home/umbrel/umbrel/apps:/umbrel-apps:ro
+    environment:
+      PORT: 3000
+      UMBREL_DATA_DIR: /umbrel-data
+      UMBREL_APPS_DIR: /umbrel-apps
