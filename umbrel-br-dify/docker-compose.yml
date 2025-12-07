@@ -91,7 +91,7 @@ services:
 
   # Dify API Server
   api:
-    image: langgenius/dify-api:1.10.1
+    image: langgenius/dify-api:1.10.1-fix.1
     restart: on-failure
     user: root
     environment:
@@ -115,7 +115,7 @@ services:
 
   # Dify Worker
   worker:
-    image: langgenius/dify-api:1.10.1
+    image: langgenius/dify-api:1.10.1-fix.1
     restart: on-failure
     user: root
     environment:
@@ -133,7 +133,7 @@ services:
 
   # Dify Web Frontend
   web:
-    image: langgenius/dify-web:1.10.1
+    image: langgenius/dify-web:1.10.1-fix.1
     restart: on-failure
     environment:
       CONSOLE_API_URL: ""

@@ -4,7 +4,7 @@ name: Dify
 tagline: Open-source LLM app development platform
 icon: https://raw.githubusercontent.com/langgenius/dify/main/web/public/logo/logo-site.png
 category: ai
-version: "1.10.1"
+version: "1.10.1-fix.1"
 port: 8090
 description: >-
   Dify is an open-source LLM app development platform that combines AI workflow,
@@ -37,7 +37,11 @@ gallery:
   - https://raw.githubusercontent.com/langgenius/dify/main/images/describe.png
   - https://raw.githubusercontent.com/langgenius/dify/main/images/models.png
 releaseNotes: >-
-  Dify v1.10.1 - Open-source LLM Application Platform
+  Dify v1.10.1-fix.1 - Security Update
+
+  Security fixes:
+    - Backend: pyarrow 17.0.0, werkzeug 3.1.4, urllib3 2.5.0
+    - Frontend: React 19.2.1 (CVE-2025-55182), Next.js 15.5.7
 
   Key features:
     - Visual AI Workflow Builder
