@@ -34,9 +34,14 @@ x-shared-env: &shared-api-worker-env
   CODE_EXECUTION_API_KEY: ${APP_PASSWORD}
   SSRF_PROXY_HTTP_URL: http://umbrel-br-dify_ssrf_proxy_1:3128
   SSRF_PROXY_HTTPS_URL: http://umbrel-br-dify_ssrf_proxy_1:3128
-  PLUGIN_API_URL: http://umbrel-br-dify_plugin_daemon_1:5002
-  PLUGIN_API_KEY: ${APP_PASSWORD}
+  # Plugin daemon configuration
+  PLUGIN_DAEMON_URL: http://umbrel-br-dify_plugin_daemon_1:5002
+  PLUGIN_DAEMON_KEY: ${APP_PASSWORD}
   INNER_API_KEY_FOR_PLUGIN: ${APP_PASSWORD}
+  PLUGIN_DIFY_INNER_API_KEY: ${APP_PASSWORD}
+  PLUGIN_DIFY_INNER_API_URL: http://umbrel-br-dify_api_1:5001
+  MARKETPLACE_ENABLED: "true"
+  MARKETPLACE_API_URL: https://marketplace.dify.ai
 
 services:
   app_proxy:
@@ -182,14 +187,23 @@ services:
       DB_DATABASE: dify_plugin
       SERVER_PORT: "5002"
       SERVER_KEY: ${APP_PASSWORD}
+      MAX_PLUGIN_PACKAGE_SIZE: "52428800"
+      PPROF_ENABLED: "false"
       DIFY_INNER_API_URL: http://umbrel-br-dify_api_1:5001
       DIFY_INNER_API_KEY: ${APP_PASSWORD}
       PLUGIN_REMOTE_INSTALLING_HOST: "0.0.0.0"
       PLUGIN_REMOTE_INSTALLING_PORT: "5003"
       PLUGIN_WORKING_PATH: /app/storage/cwd
       FORCE_VERIFYING_SIGNATURE: "true"
+      PYTHON_ENV_INIT_TIMEOUT: "120"
+      PLUGIN_MAX_EXECUTION_TIMEOUT: "600"
+      PLUGIN_STDIO_BUFFER_SIZE: "1024"
+      PLUGIN_STDIO_MAX_BUFFER_SIZE: "5242880"
       PLUGIN_STORAGE_TYPE: local
       PLUGIN_STORAGE_LOCAL_ROOT: /app/storage
+      PLUGIN_INSTALLED_PATH: plugin
+      PLUGIN_PACKAGE_CACHE_PATH: plugin_packages
+      PLUGIN_MEDIA_CACHE_PATH: assets
     volumes:
       - ${APP_DATA_DIR}/data/plugin_daemon:/app/storage
     depends_on:
