@@ -1,9 +1,15 @@
 version: "3.7"
 
 x-shared-env: &shared-api-worker-env
+  # Logging
   LOG_LEVEL: INFO
+  LOG_FILE: /app/logs/server.log
+  LOG_FILE_MAX_SIZE: "20"
+  LOG_FILE_BACKUP_COUNT: "5"
+  LOG_TZ: UTC
   DEBUG: "false"
   FLASK_DEBUG: "false"
+  # Core settings
   SECRET_KEY: ${APP_PASSWORD}
   DEPLOY_ENV: PRODUCTION
   CONSOLE_API_URL: ""
@@ -13,30 +19,46 @@ x-shared-env: &shared-api-worker-env
   APP_WEB_URL: ""
   FILES_URL: ""
   MIGRATION_ENABLED: "true"
+  # Database
   DB_USERNAME: postgres
   DB_PASSWORD: ${APP_PASSWORD}
   DB_HOST: umbrel-br-dify_db_1
   DB_PORT: "5432"
   DB_DATABASE: dify
+  SQLALCHEMY_POOL_SIZE: "30"
+  SQLALCHEMY_MAX_OVERFLOW: "10"
+  SQLALCHEMY_POOL_RECYCLE: "3600"
+  SQLALCHEMY_ECHO: "false"
+  # Redis
   REDIS_HOST: umbrel-br-dify_redis_1
   REDIS_PORT: "6379"
   REDIS_PASSWORD: ${APP_PASSWORD}
   REDIS_DB: "0"
+  REDIS_USE_SSL: "false"
+  # Celery
   CELERY_BROKER_URL: redis://:${APP_PASSWORD}@umbrel-br-dify_redis_1:6379/1
+  CELERY_BACKEND: redis
+  # Storage
   STORAGE_TYPE: opendal
   OPENDAL_SCHEME: fs
   OPENDAL_FS_ROOT: storage
+  # Vector store
   VECTOR_STORE: weaviate
   WEAVIATE_ENDPOINT: http://umbrel-br-dify_weaviate_1:8080
   WEAVIATE_API_KEY: ${APP_PASSWORD}
+  # Code sandbox
   SANDBOX_API_KEY: ${APP_PASSWORD}
   CODE_EXECUTION_ENDPOINT: http://umbrel-br-dify_sandbox_1:8194
   CODE_EXECUTION_API_KEY: ${APP_PASSWORD}
+  SANDBOX_HTTP_PROXY: http://umbrel-br-dify_ssrf_proxy_1:3128
+  SANDBOX_HTTPS_PROXY: http://umbrel-br-dify_ssrf_proxy_1:3128
+  # SSRF Proxy
   SSRF_PROXY_HTTP_URL: http://umbrel-br-dify_ssrf_proxy_1:3128
   SSRF_PROXY_HTTPS_URL: http://umbrel-br-dify_ssrf_proxy_1:3128
   # Plugin daemon configuration
   PLUGIN_DAEMON_URL: http://umbrel-br-dify_plugin_daemon_1:5002
   PLUGIN_DAEMON_KEY: ${APP_PASSWORD}
+  PLUGIN_DAEMON_PORT: "5002"
   INNER_API_KEY_FOR_PLUGIN: ${APP_PASSWORD}
   PLUGIN_DIFY_INNER_API_KEY: ${APP_PASSWORD}
   PLUGIN_DIFY_INNER_API_URL: http://umbrel-br-dify_api_1:5001
@@ -45,8 +67,18 @@ x-shared-env: &shared-api-worker-env
   MARKETPLACE_API_URL: https://marketplace.dify.ai
   FORCE_VERIFYING_SIGNATURE: "true"
   ENFORCE_LANGGENIUS_PLUGIN_SIGNATURES: "true"
-  # Disable new user registration (only admin can invite)
-  # First admin account uses INIT_PASSWORD from Umbrel credentials
+  # Server settings
+  DIFY_BIND_ADDRESS: "0.0.0.0"
+  DIFY_PORT: "5001"
+  SERVER_WORKER_AMOUNT: "1"
+  SERVER_WORKER_CLASS: gevent
+  GUNICORN_TIMEOUT: "360"
+  # API settings
+  WEB_API_CORS_ALLOW_ORIGINS: "*"
+  API_TOOL_DEFAULT_CONNECT_TIMEOUT: "10"
+  API_TOOL_DEFAULT_READ_TIMEOUT: "60"
+  APP_MAX_EXECUTION_TIME: "1200"
+  # Registration settings
   ALLOW_REGISTER: "false"
   INIT_PASSWORD: ${APP_PASSWORD}
 
@@ -66,11 +98,20 @@ services:
       <<: *shared-api-worker-env
       MODE: api
     depends_on:
-      - db
-      - redis
-      - weaviate
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      weaviate:
+        condition: service_healthy
     volumes:
       - ${APP_DATA_DIR}/data/storage:/app/api/storage
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 60s
 
   # Dify Worker
   worker:
@@ -81,9 +122,12 @@ services:
       <<: *shared-api-worker-env
       MODE: worker
     depends_on:
-      - db
-      - redis
-      - weaviate
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      weaviate:
+        condition: service_healthy
     volumes:
       - ${APP_DATA_DIR}/data/storage:/app/api/storage
 
@@ -162,6 +206,11 @@ services:
       AUTHORIZATION_ADMINLIST_ENABLED: "false"
     volumes:
       - ${APP_DATA_DIR}/data/weaviate:/var/lib/weaviate
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/v1/.well-known/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   # Code Sandbox
   sandbox:
@@ -300,5 +349,9 @@ services:
         NGINXEOF
         exec nginx -g 'daemon off;'
     depends_on:
-      - api
-      - web
+      api:
+        condition: service_healthy
+      web:
+        condition: service_started
+      plugin_daemon:
+        condition: service_healthy
