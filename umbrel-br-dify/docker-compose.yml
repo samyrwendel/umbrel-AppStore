@@ -238,6 +238,9 @@ services:
       PLUGIN_INSTALLED_PATH: plugin
       PLUGIN_PACKAGE_CACHE_PATH: plugin_packages
       PLUGIN_MEDIA_CACHE_PATH: assets
+      # Proxy for marketplace access
+      HTTP_PROXY: http://umbrel-br-dify_ssrf_proxy_1:3128
+      HTTPS_PROXY: http://umbrel-br-dify_ssrf_proxy_1:3128
     volumes:
       - ${APP_DATA_DIR}/data/plugin_daemon:/app/storage
     depends_on:
