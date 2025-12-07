@@ -7,14 +7,14 @@ services:
       APP_PORT: 3000
 
   web:
-    image: ghcr.io/umbrel-br/cleanup-manager:v1.0.0
-    build: .
+    image: node:20-alpine
     restart: on-failure
     stop_grace_period: 1m
+    working_dir: /app
+    command: sh -c "if [ ! -f /app/server.js ]; then apk add --no-cache git && git clone --depth 1 https://github.com/samyrwendel/umbrel-AppStore.git /tmp/repo && cp -r /tmp/repo/umbrel-br-cleanup-manager/app/* /app/ && rm -rf /tmp/repo && npm install --production; fi && node server.js"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/umbrel/umbrel/app-data:/umbrel-data:ro
-      - /home/umbrel/umbrel/apps:/umbrel-apps:ro
+      - ${APP_DATA_DIR}/data/app:/app
     environment:
       PORT: 3000
       UMBREL_DATA_DIR: /umbrel-data

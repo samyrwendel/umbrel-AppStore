@@ -2,7 +2,7 @@ manifestVersion: 1
 id: umbrel-br-cleanup-manager
 name: Cleanup Manager
 tagline: Lista e limpa instalações mal sucedidas do Umbrel
-icon: https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/main/umbrel-br-cleanup-manager/icons/icon.svg
+icon: https://cdn.jsdelivr.net/gh/selfhst/icons/svg/cleanarr.svg
 category: utilities
 version: "1.0.0"
 port: 8095
