@@ -79,8 +79,8 @@ x-shared-env: &shared-api-worker-env
   API_TOOL_DEFAULT_READ_TIMEOUT: "60"
   APP_MAX_EXECUTION_TIME: "1200"
   # Registration settings
-  ALLOW_REGISTER: "false"
-  INIT_PASSWORD: ${APP_PASSWORD}
+  # First user becomes admin, subsequent registrations disabled after setup
+  ALLOW_REGISTER: "true"
 
 services:
   app_proxy:
