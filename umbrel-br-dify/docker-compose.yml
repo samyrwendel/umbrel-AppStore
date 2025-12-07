@@ -98,20 +98,11 @@ services:
       <<: *shared-api-worker-env
       MODE: api
     depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      weaviate:
-        condition: service_healthy
+      - db
+      - redis
+      - weaviate
     volumes:
       - ${APP_DATA_DIR}/data/storage:/app/api/storage
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
-      interval: 15s
-      timeout: 10s
-      retries: 10
-      start_period: 60s
 
   # Dify Worker
   worker:
@@ -122,12 +113,9 @@ services:
       <<: *shared-api-worker-env
       MODE: worker
     depends_on:
-      db:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      weaviate:
-        condition: service_healthy
+      - db
+      - redis
+      - weaviate
     volumes:
       - ${APP_DATA_DIR}/data/storage:/app/api/storage
 
@@ -206,11 +194,6 @@ services:
       AUTHORIZATION_ADMINLIST_ENABLED: "false"
     volumes:
       - ${APP_DATA_DIR}/data/weaviate:/var/lib/weaviate
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/v1/.well-known/ready"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
 
   # Code Sandbox
   sandbox:
@@ -227,11 +210,6 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data/sandbox/dependencies:/dependencies
       - ${APP_DATA_DIR}/data/sandbox/conf:/conf
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8194/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
   # Plugin Daemon
   plugin_daemon:
@@ -263,16 +241,8 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data/plugin_daemon:/app/storage
     depends_on:
-      db:
-        condition: service_healthy
-      db_plugin_init:
-        condition: service_completed_successfully
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:5002/"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-      start_period: 30s
+      - db
+      - db_plugin_init
 
   # SSRF Proxy
   ssrf_proxy:
@@ -349,9 +319,5 @@ services:
         NGINXEOF
         exec nginx -g 'daemon off;'
     depends_on:
-      api:
-        condition: service_healthy
-      web:
-        condition: service_started
-      plugin_daemon:
-        condition: service_healthy
+      - api
+      - web
