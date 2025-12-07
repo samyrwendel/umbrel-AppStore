@@ -43,7 +43,9 @@ x-shared-env: &shared-api-worker-env
   MARKETPLACE_ENABLED: "true"
   MARKETPLACE_API_URL: https://marketplace.dify.ai
   # Disable new user registration (only admin can invite)
+  # First admin account uses INIT_PASSWORD from Umbrel credentials
   ALLOW_REGISTER: "false"
+  INIT_PASSWORD: ${APP_PASSWORD}
 
 services:
   app_proxy:
