@@ -33,7 +33,9 @@ submission: https://github.com/samyrwendel/umbrel-AppStore
 repo: https://github.com/langgenius/dify
 support: https://github.com/langgenius/dify/issues
 gallery:
-  - https://raw.githubusercontent.com/langgenius/dify/main/web/public/images/upload-knowledge.png
+  - https://raw.githubusercontent.com/langgenius/dify/main/images/GitHub_README_if.png
+  - https://raw.githubusercontent.com/langgenius/dify/main/images/describe.png
+  - https://raw.githubusercontent.com/langgenius/dify/main/images/models.png
 releaseNotes: >-
   Dify v1.10.1 - Open-source LLM Application Platform
 
