@@ -42,6 +42,8 @@ x-shared-env: &shared-api-worker-env
   PLUGIN_DIFY_INNER_API_URL: http://umbrel-br-dify_api_1:5001
   MARKETPLACE_ENABLED: "true"
   MARKETPLACE_API_URL: https://marketplace.dify.ai
+  # Disable new user registration (only admin can invite)
+  ALLOW_REGISTER: "false"
 
 services:
   app_proxy:
