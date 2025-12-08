@@ -833,6 +833,31 @@
       </div>
     </div>
 
+    <!-- App Stores Section -->
+    <div class="section" id="appStoresSection">
+      <div class="section-header">
+        <div class="section-title" onclick="toggleSection('appStoresSection')">
+          <h2>App Stores</h2>
+          <span class="badge info" id="appStoresBadge">0</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="action-btn" id="refreshAppStoresBtn" style="padding: 6px 14px; font-size: 12px;" onclick="event.stopPropagation(); refreshAppStores()">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" style="margin-right: 4px;">
+              <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+            </svg>
+            Atualizar Lojas
+          </button>
+          <svg class="chevron" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" onclick="toggleSection('appStoresSection')" style="cursor: pointer;">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+          </svg>
+        </div>
+      </div>
+      <div class="section-content">
+        <ul class="item-list" id="appStoresList"></ul>
+      </div>
+    </div>
+
     <!-- Global Cleanup -->
     <div class="section">
       <div class="section-header" onclick="toggleSection('globalSection')" id="globalSection">
@@ -882,7 +907,8 @@
           loadFailed(),
           loadOrphanVolumes(),
           loadDanglingImages(),
-          loadContainers()
+          loadContainers(),
+          loadAppStores()
         ]);
       } catch (e) {
         showToast('Erro ao carregar dados', 'error');
@@ -1328,6 +1354,71 @@
         loadData();
       } catch (e) {
         showToast('Erro na limpeza: ' + e.message, 'error');
+      }
+    }
+
+    async function loadAppStores() {
+      try {
+        const res = await fetch('/api/appstores');
+        const stores = await res.json();
+
+        const list = document.getElementById('appStoresList');
+        const badge = document.getElementById('appStoresBadge');
+
+        badge.textContent = stores.length;
+
+        if (stores.length === 0) {
+          list.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg><p>Nenhuma App Store encontrada</p></div>';
+        } else {
+          list.innerHTML = stores.map(store => {
+            // Extract repo name from URL
+            const repoName = store.url.replace('https://github.com/', '').replace('.git', '');
+            return `
+            <li class="item">
+              <div class="item-info">
+                <div class="item-name">${repoName}</div>
+                <div class="item-details">
+                  <span>Commit: ${store.commit}</span>
+                  <span>Atualizado: ${store.lastUpdate}</span>
+                </div>
+              </div>
+            </li>
+          `}).join('');
+        }
+      } catch (e) {
+        console.error('Erro ao carregar app stores:', e);
+      }
+    }
+
+    async function refreshAppStores() {
+      const btn = document.getElementById('refreshAppStoresBtn');
+      const originalText = btn.innerHTML;
+
+      try {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner"></span> Atualizando...';
+        showToast('Atualizando repositórios das lojas...', 'info');
+
+        const res = await fetch('/api/appstores/refresh', { method: 'POST' });
+        const data = await res.json();
+
+        if (data.success) {
+          const updatedStores = data.results.filter(r => r.updated);
+          if (updatedStores.length > 0) {
+            showToast(`${updatedStores.length} loja(s) atualizada(s)! Recarregue a App Store do Umbrel para ver as mudanças.`, 'success');
+          } else {
+            showToast('Todas as lojas já estavam atualizadas', 'success');
+          }
+          loadAppStores();
+        } else {
+          showToast('Erro ao atualizar: ' + data.error, 'error');
+        }
+      } catch (e) {
+        console.error('Erro:', e);
+        showToast('Erro ao atualizar lojas: ' + e.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
       }
     }
 

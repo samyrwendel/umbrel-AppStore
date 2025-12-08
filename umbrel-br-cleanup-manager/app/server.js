@@ -553,6 +553,119 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// App Store directory (where umbrel caches the git repos)
+const APP_STORES_DIR = '/home/umbrel/umbrel/app-stores';
+
+// Get list of app store repositories
+app.get('/api/appstores', async (req, res) => {
+  try {
+    const dirs = await fs.readdir(APP_STORES_DIR);
+    const stores = [];
+
+    for (const dir of dirs) {
+      if (dir.startsWith('.')) continue; // Skip hidden dirs
+
+      const storePath = path.join(APP_STORES_DIR, dir);
+      const stat = await fs.stat(storePath);
+
+      if (stat.isDirectory()) {
+        try {
+          // Get git remote URL
+          const remoteUrl = await execCommand(`cd "${storePath}" && git remote get-url origin 2>/dev/null`);
+          // Get current commit
+          const commit = await execCommand(`cd "${storePath}" && git rev-parse --short HEAD 2>/dev/null`);
+          // Get last update time
+          const lastUpdate = await execCommand(`cd "${storePath}" && git log -1 --format=%ci 2>/dev/null`);
+
+          stores.push({
+            name: dir,
+            path: storePath,
+            url: remoteUrl.trim(),
+            commit: commit.trim(),
+            lastUpdate: lastUpdate.trim()
+          });
+        } catch (e) {
+          // Not a git repo, skip
+        }
+      }
+    }
+
+    res.json(stores);
+  } catch (e) {
+    console.error('Error listing app stores:', e);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// Refresh all app store repositories
+app.post('/api/appstores/refresh', async (req, res) => {
+  console.log('[APP STORE REFRESH] Iniciando atualização das lojas...');
+
+  try {
+    const dirs = await fs.readdir(APP_STORES_DIR);
+    const results = [];
+
+    for (const dir of dirs) {
+      if (dir.startsWith('.')) continue;
+
+      const storePath = path.join(APP_STORES_DIR, dir);
+      const stat = await fs.stat(storePath);
+
+      if (stat.isDirectory()) {
+        try {
+          // Check if it's a git repo
+          await execCommand(`cd "${storePath}" && git status 2>/dev/null`);
+
+          // Get current commit before update
+          const beforeCommit = await execCommand(`cd "${storePath}" && git rev-parse --short HEAD 2>/dev/null`);
+
+          // Fetch and pull latest changes
+          console.log(`[APP STORE REFRESH] Atualizando ${dir}...`);
+          await execCommand(`cd "${storePath}" && git fetch origin 2>&1`);
+          const pullResult = await execCommand(`cd "${storePath}" && git pull origin master 2>&1 || git pull origin main 2>&1`);
+
+          // Get new commit after update
+          const afterCommit = await execCommand(`cd "${storePath}" && git rev-parse --short HEAD 2>/dev/null`);
+
+          const updated = beforeCommit.trim() !== afterCommit.trim();
+
+          results.push({
+            name: dir,
+            success: true,
+            updated,
+            beforeCommit: beforeCommit.trim(),
+            afterCommit: afterCommit.trim(),
+            message: updated ? 'Atualizado!' : 'Já estava atualizado'
+          });
+
+          console.log(`[APP STORE REFRESH] ${dir}: ${updated ? 'ATUALIZADO' : 'já atualizado'} (${beforeCommit.trim()} -> ${afterCommit.trim()})`);
+        } catch (e) {
+          console.error(`[APP STORE REFRESH] Erro em ${dir}:`, e.message);
+          results.push({
+            name: dir,
+            success: false,
+            error: e.message || 'Erro desconhecido'
+          });
+        }
+      }
+    }
+
+    const updatedCount = results.filter(r => r.updated).length;
+    const successCount = results.filter(r => r.success).length;
+
+    console.log(`[APP STORE REFRESH] Concluído: ${successCount}/${results.length} lojas processadas, ${updatedCount} atualizadas`);
+
+    res.json({
+      success: true,
+      message: `${updatedCount} loja(s) atualizada(s) de ${successCount} processada(s)`,
+      results
+    });
+  } catch (e) {
+    console.error('[APP STORE REFRESH] Erro geral:', e);
+    res.status(500).json({ error: e.message });
+  }
+});
+
 // Serve frontend
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));

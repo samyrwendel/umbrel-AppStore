@@ -4,7 +4,7 @@ name: Cleanup Manager
 tagline: Lista e limpa instalações mal sucedidas do Umbrel
 icon: https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-cleanup-manager/icons/icon.svg
 category: utilities
-version: "1.1.0"
+version: "1.2.0"
 port: 8095
 description: >-
   O Cleanup Manager é uma ferramenta essencial para manter seu Umbrel saudável e organizado.
@@ -32,18 +32,14 @@ support: https://github.com/samyrwendel/umbrel-AppStore/issues
 gallery:
   - https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-cleanup-manager/gallery/screenshot-1.png
 releaseNotes: >-
-  v1.1.0 - Novo design inspirado no Portainer:
+  v1.2.0 - App Store Refresh:
 
-  - Interface completamente redesenhada com tema dark
+  - Nova seção "App Stores" mostrando repositórios configurados
 
-  - Cards de estatísticas com indicadores coloridos
+  - Botão "Atualizar Lojas" para forçar sync dos repositórios
 
-  - Botão "Remover Todos" para volumes órfãos
+  - Não precisa mais remover/adicionar URL da loja para atualizar
 
-  - Melhorias na detecção de tamanho de volumes
-
-  - Toast notifications aprimoradas
-
-  - Layout responsivo melhorado
+  - Mostra commit atual e data da última atualização
 dependencies: []
 path: ""
