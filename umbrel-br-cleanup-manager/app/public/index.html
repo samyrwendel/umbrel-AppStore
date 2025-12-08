@@ -602,7 +602,7 @@
       <div class="section-content">
         <ul class="item-list" id="imagesList"></ul>
         <div class="action-bar" id="imagesActions" style="display: none;">
-          <button class="action-btn danger" onclick="pruneImages()">Limpar Imagens Pendentes</button>
+          <button class="action-btn danger" onclick="deleteAllDanglingImages()">Remover Todas as Imagens Pendentes</button>
         </div>
       </div>
     </div>
@@ -959,92 +959,166 @@
     }
 
     async function deleteImage(id) {
-      showModal('Remover Imagem', 'Tem certeza que deseja remover esta imagem?', async () => {
-        try {
-          const res = await fetch(`/api/image/${encodeURIComponent(id)}`, { method: 'DELETE' });
-          const data = await res.json();
-          if (data.success) {
-            showToast('Imagem removida com sucesso', 'success');
-            loadData();
-          } else {
-            showToast(data.error || 'Erro ao remover', 'error');
-          }
-        } catch (e) {
-          showToast('Erro ao remover imagem', 'error');
+      if (!confirm('Tem certeza que deseja remover esta imagem?')) return;
+
+      try {
+        showToast('Removendo imagem...', 'info');
+        const res = await fetch(`/api/image/${encodeURIComponent(id)}`, { method: 'DELETE' });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Imagem removida com sucesso', 'success');
+          loadData();
+        } else {
+          showToast(`Erro: ${data.error}`, 'error');
         }
-      });
+      } catch (e) {
+        showToast('Erro ao remover imagem: ' + e.message, 'error');
+      }
+    }
+
+    async function deleteAllDanglingImages() {
+      if (!confirm('ATENÇÃO: Isso vai remover TODAS as imagens pendentes. Tem certeza?')) return;
+
+      try {
+        showToast('Buscando imagens pendentes...', 'info');
+        const res = await fetch('/api/images/dangling');
+        const images = await res.json();
+
+        if (images.length === 0) {
+          showToast('Nenhuma imagem pendente encontrada', 'success');
+          return;
+        }
+
+        showToast(`Removendo ${images.length} imagens...`, 'info');
+        let removed = 0;
+        let errors = 0;
+
+        for (const img of images) {
+          try {
+            const delRes = await fetch(`/api/image/${encodeURIComponent(img.fullId)}`, { method: 'DELETE' });
+            const data = await delRes.json();
+            if (data.success) {
+              removed++;
+              if (removed % 5 === 0) {
+                showToast(`Progresso: ${removed}/${images.length} imagens removidas...`, 'info');
+              }
+            } else {
+              errors++;
+              console.error(`Erro ao remover ${img.id}:`, data.error);
+            }
+          } catch (e) {
+            errors++;
+            console.error(`Erro ao remover ${img.id}:`, e);
+          }
+        }
+
+        if (errors === 0) {
+          showToast(`${removed} imagens removidas com sucesso!`, 'success');
+        } else {
+          showToast(`${removed} imagens removidas, ${errors} erros`, 'warning');
+        }
+        loadData();
+      } catch (e) {
+        console.error('Erro:', e);
+        showToast('Erro ao remover imagens: ' + e.message, 'error');
+      }
     }
 
     async function cleanAllFailed() {
-      showModal('Limpar Todos', 'Tem certeza que deseja remover todos os containers com problema?', async () => {
-        try {
-          const res = await fetch('/api/failed');
-          const items = await res.json();
-          let count = 0;
-          for (const item of items) {
-            try {
-              await fetch(`/api/container/${item.fullId}`, { method: 'DELETE' });
-              count++;
-            } catch (e) {}
-          }
-          showToast(`${count} containers removidos`, 'success');
-          loadData();
-        } catch (e) {
-          showToast('Erro ao limpar', 'error');
+      if (!confirm('Tem certeza que deseja remover todos os containers com problema?')) return;
+
+      try {
+        showToast('Removendo containers com problema...', 'info');
+        const res = await fetch('/api/failed');
+        const items = await res.json();
+
+        if (items.length === 0) {
+          showToast('Nenhum container com problema encontrado', 'success');
+          return;
         }
-      });
+
+        let removed = 0;
+        let errors = 0;
+
+        for (const item of items) {
+          try {
+            const delRes = await fetch(`/api/container/${item.fullId}`, { method: 'DELETE' });
+            const data = await delRes.json();
+            if (data.success) {
+              removed++;
+            } else {
+              errors++;
+            }
+          } catch (e) {
+            errors++;
+          }
+        }
+
+        if (errors === 0) {
+          showToast(`${removed} containers removidos com sucesso!`, 'success');
+        } else {
+          showToast(`${removed} containers removidos, ${errors} erros`, 'warning');
+        }
+        loadData();
+      } catch (e) {
+        showToast('Erro ao limpar: ' + e.message, 'error');
+      }
     }
 
     async function pruneContainers() {
-      showModal('Limpar Containers', 'Remover todos os containers parados?', async () => {
-        try {
-          const res = await fetch('/api/prune/containers', { method: 'POST' });
-          const data = await res.json();
-          showToast(`Liberado: ${data.spaceReclaimed}`, 'success');
-          loadData();
-        } catch (e) {
-          showToast('Erro ao limpar', 'error');
-        }
-      });
+      if (!confirm('Remover todos os containers parados?')) return;
+
+      try {
+        showToast('Limpando containers parados...', 'info');
+        const res = await fetch('/api/prune/containers', { method: 'POST' });
+        const data = await res.json();
+        showToast(`Liberado: ${data.spaceReclaimed}`, 'success');
+        loadData();
+      } catch (e) {
+        showToast('Erro ao limpar: ' + e.message, 'error');
+      }
     }
 
     async function pruneVolumes() {
-      showModal('Limpar Volumes', 'Remover todos os volumes não utilizados? Os dados serão perdidos permanentemente.', async () => {
-        try {
-          const res = await fetch('/api/prune/volumes', { method: 'POST' });
-          const data = await res.json();
-          showToast(`Liberado: ${data.spaceReclaimed}`, 'success');
-          loadData();
-        } catch (e) {
-          showToast('Erro ao limpar', 'error');
-        }
-      });
+      if (!confirm('Remover todos os volumes não utilizados? Os dados serão perdidos permanentemente.')) return;
+
+      try {
+        showToast('Limpando volumes...', 'info');
+        const res = await fetch('/api/prune/volumes', { method: 'POST' });
+        const data = await res.json();
+        showToast(`Liberado: ${data.spaceReclaimed}`, 'success');
+        loadData();
+      } catch (e) {
+        showToast('Erro ao limpar: ' + e.message, 'error');
+      }
     }
 
     async function pruneImages() {
-      showModal('Limpar Imagens', 'Remover todas as imagens não utilizadas?', async () => {
-        try {
-          const res = await fetch('/api/prune/images', { method: 'POST' });
-          const data = await res.json();
-          showToast(`Liberado: ${data.spaceReclaimed}`, 'success');
-          loadData();
-        } catch (e) {
-          showToast('Erro ao limpar', 'error');
-        }
-      });
+      if (!confirm('Remover todas as imagens não utilizadas?')) return;
+
+      try {
+        showToast('Limpando imagens...', 'info');
+        const res = await fetch('/api/prune/images', { method: 'POST' });
+        const data = await res.json();
+        showToast(`Liberado: ${data.spaceReclaimed}`, 'success');
+        loadData();
+      } catch (e) {
+        showToast('Erro ao limpar: ' + e.message, 'error');
+      }
     }
 
-    function confirmFullCleanup() {
-      showModal('Limpeza Completa', 'ATENÇÃO: Isso removerá TODOS os containers parados, volumes não utilizados e imagens pendentes. Os dados podem ser perdidos permanentemente. Continuar?', async () => {
-        try {
-          const res = await fetch('/api/cleanup/all', { method: 'POST' });
-          const data = await res.json();
-          showToast(`Limpeza concluída! Containers: ${data.results.containers}, Volumes: ${data.results.volumes}, Imagens: ${data.results.images}. Liberado: ${data.results.spaceReclaimed}`, 'success');
-          loadData();
-        } catch (e) {
-          showToast('Erro na limpeza', 'error');
-        }
-      });
+    async function confirmFullCleanup() {
+      if (!confirm('ATENÇÃO: Isso removerá TODOS os containers parados, volumes não utilizados e imagens pendentes. Os dados podem ser perdidos permanentemente. Continuar?')) return;
+
+      try {
+        showToast('Executando limpeza completa...', 'info');
+        const res = await fetch('/api/cleanup/all', { method: 'POST' });
+        const data = await res.json();
+        showToast(`Limpeza concluída! Containers: ${data.results.containers}, Volumes: ${data.results.volumes}, Imagens: ${data.results.images}. Liberado: ${data.results.spaceReclaimed}`, 'success');
+        loadData();
+      } catch (e) {
+        showToast('Erro na limpeza: ' + e.message, 'error');
+      }
     }
 
     function showModal(title, message, onConfirm) {
