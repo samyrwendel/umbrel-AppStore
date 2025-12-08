@@ -30,9 +30,7 @@ services:
       start_period: 120s
 
   tor:
-    image: getumbrel/tor:0.4.7.8
+    image: dperson/torproxy:latest
     restart: on-failure
-    volumes:
-      - ${APP_DATA_DIR}/tor:/data
     environment:
-      - HOME=/tmp
+      - TOR_NewCircuitPeriod=30
