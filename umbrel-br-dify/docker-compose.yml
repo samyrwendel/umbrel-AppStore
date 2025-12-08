@@ -212,8 +212,29 @@ services:
       - 8.8.4.4
       - 1.1.1.1
     privileged: true
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        mkdir -p /conf
+        cat > /conf/config.yaml << 'CONFIGEOF'
+        app:
+          port: 8194
+          debug: false
+          key: ${SANDBOX_API_KEY}
+        max_workers: 4
+        max_requests: 50
+        worker_timeout: 15
+        python_path: /usr/local/bin/python3
+        enable_network: true
+        proxy:
+          socks5: ""
+          http: http://umbrel-br-dify_ssrf_proxy_1:3128
+          https: http://umbrel-br-dify_ssrf_proxy_1:3128
+        CONFIGEOF
+        exec /main
     environment:
       API_KEY: ${APP_PASSWORD}
+      SANDBOX_API_KEY: ${APP_PASSWORD}
       GIN_MODE: release
       WORKER_TIMEOUT: "15"
       ENABLE_NETWORK: "true"
@@ -222,7 +243,6 @@ services:
       SANDBOX_PORT: "8194"
     volumes:
       - ${APP_DATA_DIR}/data/sandbox/dependencies:/dependencies
-      - ${APP_DATA_DIR}/data/sandbox/conf:/conf
 
   # Plugin Daemon
   plugin_daemon:
@@ -268,6 +288,7 @@ services:
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
+        rm -f /run/squid.pid
         cat > /etc/squid/squid.conf << 'SQUIDEOF'
         acl localnet src 0.0.0.1-0.255.255.255
         acl localnet src 10.0.0.0/8
@@ -289,6 +310,7 @@ services:
         http_port 3128
         coredump_dir /var/spool/squid
         refresh_pattern . 0 20% 4320
+        pid_filename /tmp/squid.pid
         SQUIDEOF
         mkdir -p /var/spool/squid
         chown -R proxy:proxy /var/spool/squid
