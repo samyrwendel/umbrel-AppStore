@@ -8,6 +8,7 @@ services:
 
   web:
     image: node:20-alpine
+    user: root
     restart: on-failure
     stop_grace_period: 30s
     command: >
