@@ -295,17 +295,69 @@ app.get('/api/containers', async (req, res) => {
   }
 });
 
+// Stop a specific container
+app.post('/api/container/:id/stop', async (req, res) => {
+  try {
+    const container = docker.getContainer(req.params.id);
+    const info = await container.inspect();
+
+    if (info.State.Running || info.State.Restarting) {
+      await container.stop({ t: 10 });
+      res.json({ success: true, message: 'Container parado com sucesso' });
+    } else {
+      res.json({ success: true, message: 'Container já estava parado' });
+    }
+  } catch (e) {
+    if (e.statusCode === 304) {
+      res.json({ success: true, message: 'Container já estava parado' });
+    } else {
+      res.status(500).json({ error: e.message });
+    }
+  }
+});
+
+// Kill a specific container (force stop)
+app.post('/api/container/:id/kill', async (req, res) => {
+  try {
+    const container = docker.getContainer(req.params.id);
+    await container.kill();
+    res.json({ success: true, message: 'Container finalizado com sucesso' });
+  } catch (e) {
+    if (e.statusCode === 409) {
+      res.json({ success: true, message: 'Container não estava rodando' });
+    } else {
+      res.status(500).json({ error: e.message });
+    }
+  }
+});
+
 // Remove a specific container
 app.delete('/api/container/:id', async (req, res) => {
   try {
     const container = docker.getContainer(req.params.id);
-    // First try to stop the container
+
+    // Get container state
+    let isRunning = false;
     try {
-      await container.stop({ t: 5 });
-    } catch (stopErr) {
-      // Container might already be stopped, continue
+      const info = await container.inspect();
+      isRunning = info.State.Running || info.State.Restarting;
+    } catch (e) {}
+
+    // If running, try to kill it first (faster than stop)
+    if (isRunning) {
+      try {
+        await container.kill();
+      } catch (killErr) {
+        // Try stop as fallback
+        try {
+          await container.stop({ t: 3 });
+        } catch (stopErr) {}
+      }
+      // Wait a bit for container to fully stop
+      await new Promise(resolve => setTimeout(resolve, 1000));
     }
-    // Then remove it
+
+    // Remove with force
     await container.remove({ force: true, v: true });
     res.json({ success: true, message: 'Container removido com sucesso' });
   } catch (e) {

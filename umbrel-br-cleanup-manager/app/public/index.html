@@ -262,10 +262,8 @@
       color: var(--accent-yellow);
     }
 
-    .delete-btn {
+    .delete-btn, .stop-btn, .kill-btn {
       background: transparent;
-      border: 1px solid var(--accent-red);
-      color: var(--accent-red);
       padding: 6px 12px;
       border-radius: 6px;
       cursor: pointer;
@@ -273,14 +271,45 @@
       transition: all 0.2s;
     }
 
+    .delete-btn {
+      border: 1px solid var(--accent-red);
+      color: var(--accent-red);
+    }
+
     .delete-btn:hover {
       background: var(--accent-red);
       color: white;
     }
 
-    .delete-btn:disabled {
+    .stop-btn {
+      border: 1px solid var(--accent-yellow);
+      color: var(--accent-yellow);
+    }
+
+    .stop-btn:hover {
+      background: var(--accent-yellow);
+      color: black;
+    }
+
+    .kill-btn {
+      border: 1px solid var(--accent-purple);
+      color: var(--accent-purple);
+    }
+
+    .kill-btn:hover {
+      background: var(--accent-purple);
+      color: white;
+    }
+
+    .delete-btn:disabled, .stop-btn:disabled, .kill-btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     .action-bar {
@@ -686,7 +715,13 @@
                 <span>Motivo: ${item.reason}</span>
               </div>
             </div>
-            <button class="delete-btn" onclick="deleteContainer('${item.fullId}')">Remover</button>
+            <div class="item-actions">
+              ${item.state === 'running' || item.state === 'restarting' ? `
+                <button class="stop-btn" onclick="stopContainer('${item.fullId}')">Parar</button>
+                <button class="kill-btn" onclick="killContainer('${item.fullId}')">Forçar</button>
+              ` : ''}
+              <button class="delete-btn" onclick="deleteContainer('${item.fullId}')">Remover</button>
+            </div>
           </li>
         `).join('');
         actions.style.display = 'flex';
@@ -788,8 +823,42 @@
       section.classList.toggle('expanded');
     }
 
+    async function stopContainer(id) {
+      showModal('Parar Container', 'Tem certeza que deseja parar este container?', async () => {
+        try {
+          const res = await fetch(`/api/container/${id}/stop`, { method: 'POST' });
+          const data = await res.json();
+          if (data.success) {
+            showToast(data.message, 'success');
+            loadData();
+          } else {
+            showToast(data.error || 'Erro ao parar', 'error');
+          }
+        } catch (e) {
+          showToast('Erro ao parar container', 'error');
+        }
+      });
+    }
+
+    async function killContainer(id) {
+      showModal('Forçar Parada', 'Isso vai forçar a parada imediata do container. Continuar?', async () => {
+        try {
+          const res = await fetch(`/api/container/${id}/kill`, { method: 'POST' });
+          const data = await res.json();
+          if (data.success) {
+            showToast(data.message, 'success');
+            loadData();
+          } else {
+            showToast(data.error || 'Erro ao forçar parada', 'error');
+          }
+        } catch (e) {
+          showToast('Erro ao forçar parada', 'error');
+        }
+      });
+    }
+
     async function deleteContainer(id) {
-      showModal('Remover Container', 'Tem certeza que deseja remover este container?', async () => {
+      showModal('Remover Container', 'Tem certeza que deseja remover este container? (Containers em execução serão forçados a parar)', async () => {
         try {
           const res = await fetch(`/api/container/${id}`, { method: 'DELETE' });
           const data = await res.json();
