@@ -8,38 +8,18 @@ version: "1.0.0"
 port: 8095
 description: >-
   O Cleanup Manager é uma ferramenta essencial para manter seu Umbrel saudável e organizado.
-
-
-  Funcionalidades principais:
-
-  - Lista todas as instalações de apps que falharam ou ficaram incompletas
-
-  - Identifica containers órfãos e volumes não utilizados
-
-  - Remove dados residuais de apps desinstalados incorretamente
-
-  - Libera espaço em disco removendo arquivos temporários
-
-  - Visualiza o status de todos os containers Docker
-
-  - Permite limpeza seletiva ou completa com um clique
-
-
-  Este app é especialmente útil quando instalações de apps falham no meio do processo,
-  deixando arquivos e containers órfãos que ocupam espaço e podem causar conflitos.
+  Lista todas as instalações de apps que falharam ou ficaram incompletas.
+  Identifica containers órfãos e volumes não utilizados.
+  Remove dados residuais de apps desinstalados incorretamente.
+  Libera espaço em disco removendo arquivos temporários.
+  Visualiza o status de todos os containers Docker.
+  Permite limpeza seletiva ou completa com um clique.
 developer: Umbrel BR Community
 website: https://github.com/samyrwendel/umbrel-AppStore
 repo: https://github.com/samyrwendel/umbrel-AppStore
 support: https://github.com/samyrwendel/umbrel-AppStore/issues
 releaseNotes: >-
-  Versão inicial do Cleanup Manager:
-
-  - Detecção automática de instalações mal sucedidas
-
-  - Interface web intuitiva para gerenciamento
-
-  - Limpeza segura com confirmação
-
-  - Visualização de espaço em disco
+  Versão inicial do Cleanup Manager com detecção automática de instalações mal sucedidas,
+  interface web intuitiva e limpeza segura com confirmação.
 dependencies: []
 path: ""
