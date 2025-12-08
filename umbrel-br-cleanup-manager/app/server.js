@@ -399,12 +399,24 @@ app.delete('/api/volume/:name', async (req, res) => {
 
 // Remove a specific image
 app.delete('/api/image/:id', async (req, res) => {
+  const imageId = req.params.id;
+  console.log(`[DELETE IMAGE] Tentando remover imagem: ${imageId}`);
+
   try {
-    const image = docker.getImage(req.params.id);
-    await image.remove({ force: true });
+    const image = docker.getImage(imageId);
+    await image.remove({ force: true, noprune: false });
+    console.log(`[DELETE IMAGE] Imagem removida com sucesso!`);
     res.json({ success: true, message: 'Imagem removida com sucesso' });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    console.error(`[DELETE IMAGE] Erro: ${e.message}`, e.statusCode);
+    // Image might be in use or already deleted
+    if (e.statusCode === 404) {
+      res.json({ success: true, message: 'Imagem já foi removida' });
+    } else if (e.statusCode === 409) {
+      res.status(500).json({ error: 'Imagem está em uso por um container', details: e.statusCode });
+    } else {
+      res.status(500).json({ error: e.message, details: e.statusCode });
+    }
   }
 });
 
