@@ -285,10 +285,18 @@ services:
   ssrf_proxy:
     image: ubuntu/squid:latest
     restart: on-failure
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+      - 1.1.1.1
+    ulimits:
+      nofile:
+        soft: 65535
+        hard: 65535
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
-        rm -f /run/squid.pid
+        rm -f /run/squid.pid /tmp/squid.pid
         cat > /etc/squid/squid.conf << 'SQUIDEOF'
         acl localnet src 0.0.0.1-0.255.255.255
         acl localnet src 10.0.0.0/8
@@ -311,6 +319,7 @@ services:
         coredump_dir /var/spool/squid
         refresh_pattern . 0 20% 4320
         pid_filename /tmp/squid.pid
+        max_filedescriptors 65535
         SQUIDEOF
         mkdir -p /var/spool/squid
         chown -R proxy:proxy /var/spool/squid
