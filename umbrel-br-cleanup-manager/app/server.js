@@ -299,7 +299,14 @@ app.get('/api/containers', async (req, res) => {
 app.delete('/api/container/:id', async (req, res) => {
   try {
     const container = docker.getContainer(req.params.id);
-    await container.remove({ force: true });
+    // First try to stop the container
+    try {
+      await container.stop({ t: 5 });
+    } catch (stopErr) {
+      // Container might already be stopped, continue
+    }
+    // Then remove it
+    await container.remove({ force: true, v: true });
     res.json({ success: true, message: 'Container removido com sucesso' });
   } catch (e) {
     res.status(500).json({ error: e.message });
