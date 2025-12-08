@@ -148,25 +148,34 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ${APP_DATA_DIR}/data/db:/var/lib/postgresql/data
-    entrypoint: ["/bin/sh", "-c"]
-    command:
-      - |
-        # Start postgres in background to set password
-        docker-entrypoint.sh postgres &
-        PG_PID=$$!
-        # Wait for postgres to be ready
-        until pg_isready -U postgres; do sleep 1; done
-        # Set password using local socket (uses POSTGRES_PASSWORD env var)
-        psql -U postgres -c "ALTER USER postgres PASSWORD '$${POSTGRES_PASSWORD}';" 2>/dev/null || true
-        # Create dify_plugin database if not exists
-        psql -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'dify_plugin'" | grep -q 1 || psql -U postgres -c "CREATE DATABASE dify_plugin"
-        # Wait for postgres process
-        wait $$PG_PID
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres"]
       interval: 5s
       timeout: 5s
       retries: 30
+
+  # Database initialization (password sync + dify_plugin database)
+  db_init:
+    image: postgres:15-alpine
+    restart: "no"
+    environment:
+      POSTGRES_PASSWORD: ${APP_PASSWORD}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        until pg_isready -h db -U postgres; do
+          echo "Waiting for PostgreSQL..."
+          sleep 2
+        done
+        echo "Setting postgres password..."
+        PGPASSWORD= psql -h db -U postgres -c "ALTER USER postgres PASSWORD '$${POSTGRES_PASSWORD}';" 2>/dev/null || true
+        echo "Creating dify_plugin database..."
+        PGPASSWORD=$${POSTGRES_PASSWORD} psql -h db -U postgres -tc "SELECT 1 FROM pg_database WHERE datname = 'dify_plugin'" | grep -q 1 || \
+        PGPASSWORD=$${POSTGRES_PASSWORD} psql -h db -U postgres -c "CREATE DATABASE dify_plugin" 2>/dev/null || true
+        echo "Database initialization complete"
+    depends_on:
+      db:
+        condition: service_healthy
 
   # Redis Cache
   redis:
@@ -275,6 +284,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      db_init:
+        condition: service_completed_successfully
 
   # SSRF Proxy
   ssrf_proxy:
