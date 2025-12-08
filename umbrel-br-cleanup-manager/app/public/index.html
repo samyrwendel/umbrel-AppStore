@@ -393,6 +393,10 @@
       border-color: var(--accent-blue);
     }
 
+    .toast.warning {
+      border-color: var(--accent-yellow);
+    }
+
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -579,7 +583,7 @@
       <div class="section-content">
         <ul class="item-list" id="volumesList"></ul>
         <div class="action-bar" id="volumesActions" style="display: none;">
-          <button class="action-btn danger" onclick="pruneVolumes()">Limpar Volumes Não Utilizados</button>
+          <button class="action-btn danger" onclick="deleteAllOrphanVolumes()">Remover Todos os Volumes Órfãos</button>
         </div>
       </div>
     </div>
@@ -902,6 +906,55 @@
       } catch (e) {
         console.error('Erro:', e);
         showToast('Erro ao remover volume: ' + e.message, 'error');
+      }
+    }
+
+    async function deleteAllOrphanVolumes() {
+      if (!confirm('ATENÇÃO: Isso vai remover TODOS os 83 volumes órfãos. Tem certeza?')) return;
+
+      try {
+        showToast('Buscando volumes órfãos...', 'info');
+        const res = await fetch('/api/volumes/orphan');
+        const volumes = await res.json();
+
+        if (volumes.length === 0) {
+          showToast('Nenhum volume órfão encontrado', 'success');
+          return;
+        }
+
+        showToast(`Removendo ${volumes.length} volumes...`, 'info');
+        let removed = 0;
+        let errors = 0;
+
+        for (const vol of volumes) {
+          try {
+            const delRes = await fetch(`/api/volume/${encodeURIComponent(vol.name)}`, { method: 'DELETE' });
+            const data = await delRes.json();
+            if (data.success) {
+              removed++;
+              // Update progress every 10 volumes
+              if (removed % 10 === 0) {
+                showToast(`Progresso: ${removed}/${volumes.length} volumes removidos...`, 'info');
+              }
+            } else {
+              errors++;
+              console.error(`Erro ao remover ${vol.name}:`, data.error);
+            }
+          } catch (e) {
+            errors++;
+            console.error(`Erro ao remover ${vol.name}:`, e);
+          }
+        }
+
+        if (errors === 0) {
+          showToast(`${removed} volumes removidos com sucesso!`, 'success');
+        } else {
+          showToast(`${removed} volumes removidos, ${errors} erros`, 'warning');
+        }
+        loadData();
+      } catch (e) {
+        console.error('Erro:', e);
+        showToast('Erro ao remover volumes: ' + e.message, 'error');
       }
     }
 
