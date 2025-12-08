@@ -120,13 +120,18 @@ async function getOrphanVolumes() {
           const isUmbrelRelated = volume.Name.includes('umbrel') ||
                                    volume.Labels?.['com.docker.compose.project']?.includes('umbrel');
 
-          let size = 'Calculando...';
+          // Try to get size using du command (more reliable)
+          let size = 'N/A';
           try {
             const volumeInfo = await docker.getVolume(volume.Name).inspect();
-            if (volumeInfo.UsageData) {
-              size = formatBytes(volumeInfo.UsageData.Size);
+            if (volumeInfo.Mountpoint) {
+              const output = await execCommand(`du -sh "${volumeInfo.Mountpoint}" 2>/dev/null | cut -f1`);
+              size = output.trim() || 'N/A';
             }
-          } catch (e) {}
+          } catch (e) {
+            // If du fails, volume might not exist on disk
+            size = 'N/A';
+          }
 
           orphanVolumes.push({
             name: volume.Name,
