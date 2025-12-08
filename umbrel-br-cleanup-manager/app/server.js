@@ -333,35 +333,51 @@ app.post('/api/container/:id/kill', async (req, res) => {
 
 // Remove a specific container
 app.delete('/api/container/:id', async (req, res) => {
+  const containerId = req.params.id;
+  console.log(`[DELETE] Tentando remover container: ${containerId}`);
+
   try {
-    const container = docker.getContainer(req.params.id);
+    const container = docker.getContainer(containerId);
 
     // Get container state
-    let isRunning = false;
+    let containerInfo;
     try {
-      const info = await container.inspect();
-      isRunning = info.State.Running || info.State.Restarting;
-    } catch (e) {}
+      containerInfo = await container.inspect();
+      console.log(`[DELETE] Container state: ${containerInfo.State.Status}, Running: ${containerInfo.State.Running}, Restarting: ${containerInfo.State.Restarting}`);
+    } catch (inspectErr) {
+      console.log(`[DELETE] Erro ao inspecionar: ${inspectErr.message}`);
+    }
+
+    const isRunning = containerInfo?.State?.Running || containerInfo?.State?.Restarting;
 
     // If running, try to kill it first (faster than stop)
     if (isRunning) {
+      console.log(`[DELETE] Container está rodando, tentando kill...`);
       try {
-        await container.kill();
+        await container.kill({ signal: 'SIGKILL' });
+        console.log(`[DELETE] Kill executado com sucesso`);
       } catch (killErr) {
-        // Try stop as fallback
+        console.log(`[DELETE] Kill falhou: ${killErr.message}, tentando stop...`);
         try {
-          await container.stop({ t: 3 });
-        } catch (stopErr) {}
+          await container.stop({ t: 5 });
+          console.log(`[DELETE] Stop executado com sucesso`);
+        } catch (stopErr) {
+          console.log(`[DELETE] Stop também falhou: ${stopErr.message}`);
+        }
       }
-      // Wait a bit for container to fully stop
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Wait for container to fully stop
+      console.log(`[DELETE] Aguardando 2 segundos...`);
+      await new Promise(resolve => setTimeout(resolve, 2000));
     }
 
     // Remove with force
+    console.log(`[DELETE] Tentando remover container...`);
     await container.remove({ force: true, v: true });
+    console.log(`[DELETE] Container removido com sucesso!`);
     res.json({ success: true, message: 'Container removido com sucesso' });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    console.error(`[DELETE] Erro final: ${e.message}`, e.statusCode);
+    res.status(500).json({ error: e.message, details: e.reason || e.statusCode });
   }
 });
 

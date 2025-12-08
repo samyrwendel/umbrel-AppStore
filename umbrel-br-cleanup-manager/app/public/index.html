@@ -389,6 +389,10 @@
       border-color: var(--accent-red);
     }
 
+    .toast.info {
+      border-color: var(--accent-blue);
+    }
+
     .modal-overlay {
       position: fixed;
       top: 0;
@@ -860,16 +864,17 @@
     async function deleteContainer(id) {
       showModal('Remover Container', 'Tem certeza que deseja remover este container? (Containers em execução serão forçados a parar)', async () => {
         try {
+          showToast('Removendo container...', 'info');
           const res = await fetch(`/api/container/${id}`, { method: 'DELETE' });
           const data = await res.json();
           if (data.success) {
             showToast('Container removido com sucesso', 'success');
             loadData();
           } else {
-            showToast(data.error || 'Erro ao remover', 'error');
+            showToast(`Erro: ${data.error}${data.details ? ' - ' + data.details : ''}`, 'error');
           }
         } catch (e) {
-          showToast('Erro ao remover container', 'error');
+          showToast('Erro ao remover container: ' + e.message, 'error');
         }
       });
     }
