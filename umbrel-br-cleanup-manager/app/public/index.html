@@ -779,20 +779,22 @@
 
     <!-- Orphan Volumes Section -->
     <div class="section" id="volumesSection">
-      <div class="section-header" onclick="toggleSection('volumesSection')">
-        <div class="section-title">
+      <div class="section-header">
+        <div class="section-title" onclick="toggleSection('volumesSection')">
           <h2>Volumes Orfãos</h2>
           <span class="badge warning" id="volumesBadge">0</span>
         </div>
-        <svg class="chevron" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
-        </svg>
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <button class="action-btn danger" id="deleteAllVolumesBtn" style="display: none; padding: 6px 14px; font-size: 12px;" onclick="event.stopPropagation(); deleteAllOrphanVolumes()">
+            Remover Todos
+          </button>
+          <svg class="chevron" width="20" height="20" viewBox="0 0 20 20" fill="currentColor" onclick="toggleSection('volumesSection')" style="cursor: pointer;">
+            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+          </svg>
+        </div>
       </div>
       <div class="section-content">
         <ul class="item-list" id="volumesList"></ul>
-        <div class="action-bar" id="volumesActions" style="display: none;">
-          <button class="action-btn danger" onclick="deleteAllOrphanVolumes()">Remover Todos os Volumes Órfãos</button>
-        </div>
       </div>
     </div>
 
@@ -950,13 +952,13 @@
 
       const list = document.getElementById('volumesList');
       const badge = document.getElementById('volumesBadge');
-      const actions = document.getElementById('volumesActions');
+      const deleteAllBtn = document.getElementById('deleteAllVolumesBtn');
 
       badge.textContent = items.length;
 
       if (items.length === 0) {
         list.innerHTML = '<div class="empty-state"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg><p>Nenhum volume orfão encontrado!</p></div>';
-        actions.style.display = 'none';
+        deleteAllBtn.style.display = 'none';
       } else {
         list.innerHTML = items.map(item => `
           <li class="item">
@@ -964,13 +966,13 @@
               <div class="item-name">${item.name}</div>
               <div class="item-details">
                 <span>Driver: ${item.driver}</span>
-                <span>Tamanho: ${item.size}</span>
+                <span>Tamanho: ${item.size || 'N/A'}</span>
               </div>
             </div>
             <button class="delete-btn" onclick="deleteVolume('${item.name}')">Remover</button>
           </li>
         `).join('');
-        actions.style.display = 'flex';
+        deleteAllBtn.style.display = 'inline-flex';
       }
     }
 
@@ -1118,8 +1120,6 @@
     }
 
     async function deleteAllOrphanVolumes() {
-      if (!confirm('ATENÇÃO: Isso vai remover TODOS os 83 volumes órfãos. Tem certeza?')) return;
-
       try {
         showToast('Buscando volumes órfãos...', 'info');
         const res = await fetch('/api/volumes/orphan');
@@ -1129,6 +1129,8 @@
           showToast('Nenhum volume órfão encontrado', 'success');
           return;
         }
+
+        if (!confirm(`ATENÇÃO: Isso vai remover TODOS os ${volumes.length} volumes órfãos permanentemente. Os dados serão perdidos. Tem certeza?`)) return;
 
         showToast(`Removendo ${volumes.length} volumes...`, 'info');
         let removed = 0;

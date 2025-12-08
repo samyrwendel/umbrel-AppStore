@@ -120,16 +120,25 @@ async function getOrphanVolumes() {
           const isUmbrelRelated = volume.Name.includes('umbrel') ||
                                    volume.Labels?.['com.docker.compose.project']?.includes('umbrel');
 
-          // Try to get size using du command (more reliable)
+          // Try to get size - first try UsageData, then du command
           let size = 'N/A';
           try {
             const volumeInfo = await docker.getVolume(volume.Name).inspect();
-            if (volumeInfo.Mountpoint) {
-              const output = await execCommand(`du -sh "${volumeInfo.Mountpoint}" 2>/dev/null | cut -f1`);
-              size = output.trim() || 'N/A';
+
+            // First check if UsageData is available (requires API data query)
+            if (volumeInfo.UsageData && volumeInfo.UsageData.Size >= 0) {
+              size = formatBytes(volumeInfo.UsageData.Size);
+            } else if (volumeInfo.Mountpoint) {
+              // Try du command as fallback
+              try {
+                const output = await execCommand(`du -sh "${volumeInfo.Mountpoint}" 2>/dev/null | cut -f1`);
+                size = output.trim() || 'N/A';
+              } catch (duErr) {
+                size = 'N/A';
+              }
             }
           } catch (e) {
-            // If du fails, volume might not exist on disk
+            // Volume inspection failed
             size = 'N/A';
           }
 
