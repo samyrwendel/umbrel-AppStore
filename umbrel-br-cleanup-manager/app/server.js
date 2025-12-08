@@ -147,11 +147,29 @@ async function getOrphanVolumes() {
   }
 }
 
-// Get dangling images
+// Get dangling images (not used by any container)
 async function getDanglingImages() {
   try {
+    // Get all dangling images (images without tags)
     const images = await docker.listImages({ filters: { dangling: ['true'] } });
-    return images.map(image => ({
+
+    // Get all containers (running and stopped) to check which images are in use
+    const containers = await docker.listContainers({ all: true });
+    const usedImageIds = new Set();
+
+    // Collect all image IDs that are being used by containers
+    containers.forEach(container => {
+      if (container.ImageID) {
+        usedImageIds.add(container.ImageID);
+      }
+    });
+
+    // Filter out images that are in use
+    const unusedImages = images.filter(image => !usedImageIds.has(image.Id));
+
+    console.log(`[IMAGES] Total dangling: ${images.length}, Em uso: ${images.length - unusedImages.length}, Disponíveis para remoção: ${unusedImages.length}`);
+
+    return unusedImages.map(image => ({
       id: image.Id.replace('sha256:', '').substring(0, 12),
       fullId: image.Id,
       size: formatBytes(image.Size),
