@@ -10,7 +10,7 @@ x-shared-env: &shared-api-worker-env
   DEBUG: "false"
   FLASK_DEBUG: "false"
   # Core settings
-  SECRET_KEY: ${APP_SECRET_KEY}
+  SECRET_KEY: ${APP_PASSWORD}
   DEPLOY_ENV: PRODUCTION
   CONSOLE_API_URL: ""
   CONSOLE_WEB_URL: ""
