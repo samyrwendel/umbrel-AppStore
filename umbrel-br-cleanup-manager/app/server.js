@@ -383,12 +383,17 @@ app.delete('/api/container/:id', async (req, res) => {
 
 // Remove a specific volume
 app.delete('/api/volume/:name', async (req, res) => {
+  const volumeName = req.params.name;
+  console.log(`[DELETE VOLUME] Tentando remover volume: ${volumeName}`);
+
   try {
-    const volume = docker.getVolume(req.params.name);
-    await volume.remove();
+    const volume = docker.getVolume(volumeName);
+    await volume.remove({ force: true });
+    console.log(`[DELETE VOLUME] Volume removido com sucesso!`);
     res.json({ success: true, message: 'Volume removido com sucesso' });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    console.error(`[DELETE VOLUME] Erro: ${e.message}`, e.statusCode);
+    res.status(500).json({ error: e.message, details: e.statusCode });
   }
 });
 

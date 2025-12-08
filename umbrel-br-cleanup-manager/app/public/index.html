@@ -884,20 +884,25 @@
     }
 
     async function deleteVolume(name) {
-      showModal('Remover Volume', 'Tem certeza que deseja remover este volume? Os dados serão perdidos permanentemente.', async () => {
-        try {
-          const res = await fetch(`/api/volume/${encodeURIComponent(name)}`, { method: 'DELETE' });
-          const data = await res.json();
-          if (data.success) {
-            showToast('Volume removido com sucesso', 'success');
-            loadData();
-          } else {
-            showToast(data.error || 'Erro ao remover', 'error');
-          }
-        } catch (e) {
-          showToast('Erro ao remover volume', 'error');
+      if (!confirm('Tem certeza que deseja remover este volume? Os dados serão perdidos permanentemente.')) return;
+
+      try {
+        showToast('Removendo volume...', 'info');
+        console.log('Chamando DELETE VOLUME para:', name);
+        const res = await fetch(`/api/volume/${encodeURIComponent(name)}`, { method: 'DELETE' });
+        console.log('Resposta recebida:', res.status);
+        const data = await res.json();
+        console.log('Data:', data);
+        if (data.success) {
+          showToast('Volume removido com sucesso', 'success');
+          loadData();
+        } else {
+          showToast(`Erro: ${data.error}${data.details ? ' - ' + data.details : ''}`, 'error');
         }
-      });
+      } catch (e) {
+        console.error('Erro:', e);
+        showToast('Erro ao remover volume: ' + e.message, 'error');
+      }
     }
 
     async function deleteImage(id) {
