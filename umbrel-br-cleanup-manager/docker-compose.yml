@@ -15,13 +15,14 @@ services:
       sh -c "
         mkdir -p /app/public &&
         cd /app &&
-        if [ ! -f /app/server.js ]; then
-          echo 'Downloading app...' &&
-          wget -q https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-cleanup-manager/app/package.json -O /app/package.json &&
-          wget -q https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-cleanup-manager/app/server.js -O /app/server.js &&
-          wget -q https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-cleanup-manager/app/public/index.html -O /app/public/index.html &&
-          npm install --production --silent
-        fi &&
+        echo 'Downloading latest app...' &&
+        wget -q https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-cleanup-manager/app/package.json -O /app/package.json.new &&
+        wget -q https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-cleanup-manager/app/server.js -O /app/server.js.new &&
+        wget -q https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-cleanup-manager/app/public/index.html -O /app/public/index.html.new &&
+        mv /app/package.json.new /app/package.json &&
+        mv /app/server.js.new /app/server.js &&
+        mv /app/public/index.html.new /app/public/index.html &&
+        npm install --production --silent 2>/dev/null || true &&
         node server.js
       "
     volumes:
