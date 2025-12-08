@@ -85,7 +85,7 @@ x-shared-env: &shared-api-worker-env
 services:
   app_proxy:
     environment:
-      APP_HOST: nginx
+      APP_HOST: umbrel-br-dify-nginx-1
       APP_PORT: 80
       PROXY_AUTH_ADD: "false"
 
@@ -356,15 +356,15 @@ services:
                 proxy_buffering off;
                 proxy_read_timeout 3600s;
                 proxy_send_timeout 3600s;
-                location /console/api { proxy_pass http://api:5001; }
-                location /api { proxy_pass http://api:5001; }
-                location /v1 { proxy_pass http://api:5001; }
-                location /files { proxy_pass http://api:5001; }
-                location /explore { proxy_pass http://web:3000; }
-                location /e/ { proxy_pass http://plugin_daemon:5002; }
-                location /mcp { proxy_pass http://api:5001; }
-                location /triggers { proxy_pass http://api:5001; }
-                location / { proxy_pass http://web:3000; }
+                location /console/api { proxy_pass http://umbrel-br-dify-api-1:5001; }
+                location /api { proxy_pass http://umbrel-br-dify-api-1:5001; }
+                location /v1 { proxy_pass http://umbrel-br-dify-api-1:5001; }
+                location /files { proxy_pass http://umbrel-br-dify-api-1:5001; }
+                location /explore { proxy_pass http://umbrel-br-dify-web-1:3000; }
+                location /e/ { proxy_pass http://umbrel-br-dify-plugin_daemon-1:5002; }
+                location /mcp { proxy_pass http://umbrel-br-dify-api-1:5001; }
+                location /triggers { proxy_pass http://umbrel-br-dify-api-1:5001; }
+                location / { proxy_pass http://umbrel-br-dify-web-1:3000; }
             }
         }
         NGINXEOF
