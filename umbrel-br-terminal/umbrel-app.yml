@@ -2,7 +2,6 @@ manifestVersion: 1
 id: umbrel-br-terminal
 name: Terminal
 tagline: Acesso rápido ao terminal do sistema
-icon: https://raw.githubusercontent.com/tsl0922/ttyd/main/html/icon-192.png
 category: developer
 version: "1.0.0"
 port: 7681
