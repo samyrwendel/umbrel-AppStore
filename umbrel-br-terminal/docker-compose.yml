@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: umbrel-br-terminal_ttyd_1
+      APP_PORT: 7681
+
+  ttyd:
+    image: tsl0922/ttyd:latest
+    restart: on-failure
+    command: ttyd -W bash
+    volumes:
+      - /home/umbrel:/home/umbrel
+      - /home/umbrel/umbrel:/umbrel
+    working_dir: /home/umbrel
+    environment:
+      - TERM=xterm-256color
