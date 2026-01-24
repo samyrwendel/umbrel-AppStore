@@ -2,6 +2,7 @@ manifestVersion: 1
 id: umbrel-br-terminal
 name: Terminal
 tagline: Acesso rápido ao terminal do sistema
+icon: https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-terminal/icons/icon.svg
 category: developer
 version: "1.0.0"
 port: 7681

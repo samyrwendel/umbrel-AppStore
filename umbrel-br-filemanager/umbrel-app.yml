@@ -2,6 +2,7 @@ manifestVersion: 1
 id: umbrel-br-filemanager
 name: File Manager
 tagline: Gerenciador de arquivos com acesso total ao sistema
+icon: https://raw.githubusercontent.com/samyrwendel/umbrel-AppStore/master/umbrel-br-filemanager/icons/icon.svg
 category: files
 version: "1.0.0"
 port: 8334
