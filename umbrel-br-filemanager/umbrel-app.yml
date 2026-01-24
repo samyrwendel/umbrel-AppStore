@@ -1,0 +1,29 @@
+manifestVersion: 1
+id: umbrel-br-filemanager
+name: File Manager
+tagline: Gerenciador de arquivos com acesso total ao sistema
+category: files
+version: "1.0.0"
+port: 8334
+description: >-
+  Gerenciador de arquivos completo com acesso desde a raiz do sistema.
+
+
+  Baseado no File Browser, permite navegar, criar, editar, mover e deletar arquivos em qualquer diretório do servidor.
+
+
+  Acesse /home/umbrel para seus projetos ou qualquer outro diretório do sistema.
+developer: Samyr Wendel
+website: https://github.com/samyrwendel
+submitter: samyrwendel
+submission: https://github.com/samyrwendel/umbrel-AppStore
+repo: https://github.com/filebrowser/filebrowser
+support: https://github.com/filebrowser/filebrowser/issues
+gallery:
+  - https://raw.githubusercontent.com/filebrowser/filebrowser/master/frontend/public/img/logo.svg
+releaseNotes: >-
+  File Manager com acesso root ao sistema de arquivos.
+dependencies: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
